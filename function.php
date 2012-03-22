@@ -7,6 +7,7 @@ function error_handler($errno, $errstr, $errfile, $errline) {
 function classname_exists($classname, $subclass = false) {
 	$classname = strtolower ( $classname );
 	$classname_update = ($subclass) ? strtolower ( $subclass ) : $classname;
+	//var_dump(CL_LOCAL . $classname_update . '.php');
 	if (file_exists ( CL_LOCAL . $classname_update . '.php' ))
 	$classname = CL_LOCAL . $classname_update;
 	elseif (file_exists ( CL .$classname_update . '.php' ))
@@ -15,12 +16,7 @@ function classname_exists($classname, $subclass = false) {
 	$classname = MODULES_LOCAL . $classname . '/' . $classname_update;
 	elseif (file_exists ( MODULES . $classname . '/' . $classname_update . '.php' ))
 	$classname = MODULES . $classname . '/' . $classname_update;
-	elseif (file_exists ( CL .'e_'.$classname_update . '.php')){
-		include CL .'e_'.$classname_update . '.php' ;
-		eval("class {$classname_update} extends e_{$classname_update} {}");
-		return false;
-	}else
-	return false;
+	else return false;
 	return $classname;
 }
 

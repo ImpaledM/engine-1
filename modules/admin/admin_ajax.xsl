@@ -15,7 +15,7 @@
 					<input type="text" id="name-section" name="name" value="{main/item/name}" />
 					<label for="alias-section">Alias</label>
 					<input type="text" id="alias-section" name="alias" value="{main/item/alias}" />
-					Модуль для раздела
+					<div style="clear:both;">Модуль для раздела</div>
 					<select name="module">
 						<xsl:for-each select="modules/item">
 							<option value="{.}">
@@ -26,7 +26,7 @@
 							</option>
 						</xsl:for-each>
 					</select>
-					Модуль для всех подразделов
+					<div style="clear:both;">Модуль для всех подразделов</div>
 					<select name="sub_module">
 						<xsl:for-each select="modules/item">
 							<option value="{.}">
@@ -42,16 +42,18 @@
 					<label for="param-section">Параметры</label>
 					<input type="hidden" name="section_present[{$id}]" value="{$id}" />
 					<input type="text" id="param-section" name="section_present_param[{$id}]" value="{$param}" />
-
-					<label for="present_anywhere">Везде</label>
-					<input style="width:20px" id="present_anywhere" type="checkbox" name="present_anywhere" value="anywhere">
-						<xsl:if test="main/item/present='anywhere'">
-							<xsl:attribute name="checked">checked</xsl:attribute>
-						</xsl:if>
-					</input>
-
-					<label for="present_reset">Сбросить</label>
-					<input style="width:20px" id="present_reset" type="checkbox" name="present_reset" value="reset" />
+					<div style="clear:both;">
+						<label for="present_anywhere">Везде</label>
+						<input style="width:20px" id="present_anywhere" type="checkbox" name="present_anywhere" value="anywhere">
+							<xsl:if test="main/item/present='anywhere'">
+								<xsl:attribute name="checked">checked</xsl:attribute>
+							</xsl:if>
+						</input>
+					</div>
+					<div style="clear:both;">
+						<label for="present_reset">Сбросить</label>
+						<input style="width:20px;" id="present_reset" type="checkbox" name="present_reset" value="reset" />
+					</div>
 				</fieldset>
 			</div>
 
@@ -61,16 +63,16 @@
 					<textarea id="title-tag" name="title">
 						<xsl:value-of select="meta_tags/item/title" />
 					</textarea>
-					
+
 					<label for="description-tag">Description</label>
 					<textarea id="title-tag" name="description">
-            <xsl:value-of select="meta_tags/item/description" />
-          </textarea>				
-			
+						<xsl:value-of select="meta_tags/item/description" />
+					</textarea>
+
 					<label for="keywords">Keywords</label>
 					<textarea id="title-tag" name="keywords">
-            <xsl:value-of select="meta_tags/item/keywords" />
-          </textarea>					
+						<xsl:value-of select="meta_tags/item/keywords" />
+					</textarea>
 				</fieldset>
 			</div>
 

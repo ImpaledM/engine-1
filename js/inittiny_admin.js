@@ -4,11 +4,11 @@ tinyMCE.init( {
 	theme : "advanced",
 	//skin : "o2k7",//o2k7
 	//skin_variant : "silver",
-	language : "en",
+	language : "ru",
 //	plugins :"safari, pagebreak, tinybrowser, style, layer, table, save, advhr, advimage, advlink, emotions, LoadWord, insertdatetime, preview,media, searchreplace, print, contextmenu, paste, directionality, fullscreen, noneditable, visualchars, nonbreaking, xhtmlxtras, template",
 //	plugins :"tinybrowser, style, layer, table, advhr, advimage, advlink, emotions, insertdatetime, preview, media, print, contextmenu, paste, directionality, fullscreen, noneditable, visualchars, nonbreaking, xhtmlxtras",
 	plugins :"safari,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,xhtmlxtras,template, imagemanager, filemanager",
-	
+
 	editor_selector : "editor",
 	// Theme options
 	theme_advanced_buttons1 : "code, cut, copy, paste, pastetext, pasteword, LoadWord, |, replace, |, bullist, numlist, |, outdent, indent, blockquote, |, undo, redo, |, link, unlink, anchor, image, cleanup, help, |, insertdate, inserttime, preview",

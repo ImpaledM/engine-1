@@ -33,10 +33,18 @@
 	</xsl:template>
 
 	<xsl:template name="current">
-		<xsl:apply-templates select="CURRENT" />
-		<xsl:apply-templates mode="anywhere" />
+    <xsl:choose>
+      <xsl:when test="//requests/get/sort">
+        1
+      </xsl:when>
+      <xsl:when test="//requests/get/meta">
+        2
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:apply-templates select="CURRENT" mode="CURRENT" />
+      </xsl:otherwise>
+    </xsl:choose>
+		<!-- <xsl:apply-templates select="CURRENT" /> -->
 	</xsl:template>
-
-	<xsl:template match="*" mode="anywhere" />
 
 </xsl:stylesheet>

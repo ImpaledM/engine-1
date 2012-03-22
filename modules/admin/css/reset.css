@@ -1,0 +1,334 @@
+@media screen {
+	html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,stike,strong,sub,sup,tt,var,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,td,th,hr,input,textarea,checkbox,radiobutton
+		{
+		border: none;
+		padding: 0;
+		margin: 0;
+		vertical-align: baseline
+	}
+	address,blockquote,body,dd,div,dl,dt,fieldset,form,frame,frameset,h1,h2,h3,h4,h5,h6,noframes,ol,p,ul,center,dir,hr,menu,pre
+		{
+		display: block
+	}
+	li {
+		display: list-item
+	}
+	head {
+		display: none
+	}
+	table {
+		display: table
+	}
+	tr {
+		display: table-row
+	}
+	thead {
+		display: table-header-group
+	}
+	tbody {
+		display: table-row-group
+	}
+	tfoot {
+		display: table-footer-group
+	}
+	col {
+		display: table-column
+	}
+	colgroup {
+		display: table-column-group
+	}
+	td,th {
+		display: table-cell
+	}
+	caption {
+		display: table-caption
+	}
+	th {
+		font-weight: bolder;
+		text-align: center
+	}
+	caption {
+		text-align: center
+	}
+	table {
+		border-collapse: collapse;
+		border-spacing: 0
+	}
+	u,ins {
+		text-decoration: underline
+	}
+	center {
+		text-align: center
+	}
+	:link,:visited {
+		text-decoration: underline
+	}
+	pre {
+		white-space: pre
+	}
+	button,textarea,input,object,select,img {
+		display: inline-block
+	}
+	s,strike,del {
+		text-decoration: line-through
+	}
+	hr {
+		border: 1px inset
+	}
+	ol {
+		list-style-type: decimal
+	}
+	ul {
+		list-style: none
+	}
+	sup,sub {
+		font-size: .75em;
+		position: relative;
+		vertical-align: middle
+	}
+	sup {
+		bottom: 0.4em
+	}
+	sub {
+		top: 0.4em
+	}
+}
+
+* {
+	
+}
+
+@media handheld {
+	html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,stike,strong,sub,sup,tt,var,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,td,th,hr
+		{
+		border: none;
+		margin: 0;
+		padding: 0
+	}
+	address,blockquote,body,dd,div,dl,dt,fieldset,form,frame,frameset,h1,h2,h3,h4,h5,h6,noframes,ol,p,ul,center,dir,hr,menu,pre
+		{
+		display: block
+	}
+	li {
+		display: list-item
+	}
+	head {
+		display: none
+	}
+	table {
+		display: table
+	}
+	tr {
+		display: table-row
+	}
+	thead {
+		display: table-header-group
+	}
+	tbody {
+		display: table-row-group
+	}
+	tfoot {
+		display: table-footer-group
+	}
+	col {
+		display: table-column
+	}
+	colgroup {
+		display: table-column-group
+	}
+	td,th {
+		display: table-cell
+	}
+	caption {
+		display: table-caption
+	}
+	th {
+		font-weight: bolder;
+		text-align: center
+	}
+	caption {
+		text-align: center
+	}
+	table {
+		border-collapse: collapse;
+		border-spacing: 0
+	}
+	u,ins {
+		text-decoration: underline
+	}
+	center {
+		text-align: center
+	}
+	:link,:visited {
+		text-decoration: underline
+	}
+	pre {
+		white-space: pre
+	}
+	button,textarea,input,object,select,img {
+		display: inline-block
+	}
+	s,strike,del {
+		text-decoration: line-through
+	}
+	hr {
+		border: 1px inset
+	}
+	ol {
+		list-style-type: decimal
+	}
+	ul {
+		list-style: none
+	}
+	.header,.col_1,.col_2,.col_3,.col_4,.footer {
+		border-bottom: 1px solid #666;
+		padding-bottom: 5px
+	}
+	input,textarea,checkbox,radiobutton {
+		border: none
+	}
+	div,ul,ol,h1,h2,h3,h4,h5,h6,table {
+		margin-top: 1em
+	}
+	table {
+		border-collapse: collapse;
+		border-spacing: 0
+	}
+	caption,th,td {
+		font-weight: normal;
+		text-align: center
+	}
+	sup,sub {
+		font-size: .75em;
+		position: relative;
+		vertical-align: middle
+	}
+	sup {
+		bottom: 0.4em
+	}
+	sub {
+		top: 0.4em
+	}
+	a {
+		text-decoration: none
+	}
+	a:hover {
+		text-decoration: underline
+	}
+}
+
+* {
+	
+}
+
+@media print {
+	html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,stike,strong,sub,sup,tt,var,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,td,th,hr
+		{
+		border: none;
+		margin: 0;
+		padding: 0
+	}
+	address,blockquote,body,dd,div,dl,dt,fieldset,form,frame,frameset,h1,h2,h3,h4,h5,h6,noframes,ol,p,ul,center,dir,hr,menu,pre
+		{
+		display: block
+	}
+	li {
+		display: list-item
+	}
+	head {
+		display: none
+	}
+	table {
+		display: table
+	}
+	tr {
+		display: table-row
+	}
+	thead {
+		display: table-header-group
+	}
+	tbody {
+		display: table-row-group
+	}
+	tfoot {
+		display: table-footer-group
+	}
+	col {
+		display: table-column
+	}
+	colgroup {
+		display: table-column-group
+	}
+	td,th {
+		display: table-cell
+	}
+	caption {
+		display: table-caption
+	}
+	th {
+		font-weight: bolder;
+		text-align: center
+	}
+	caption {
+		text-align: center
+	}
+	table {
+		border-collapse: collapse;
+		border-spacing: 0
+	}
+	u,ins {
+		text-decoration: underline
+	}
+	center {
+		text-align: center
+	}
+	:link,:visited {
+		text-decoration: underline
+	}
+	pre {
+		white-space: pre
+	}
+	button,textarea,input,object,select,img {
+		display: inline-block
+	}
+	s,strike,del {
+		text-decoration: line-through
+	}
+	hr {
+		border: 1px inset
+	}
+	ol {
+		list-style-type: decimal
+	}
+	ul {
+		list-style: none
+	}
+	div,ul,ol,h1,h2,h3,h4,h5,h6,table {
+		margin-top: 1cm
+	}
+	.footer,img,textarea,input,select,form {
+		display: none
+	}
+	ol,ul {
+		list-style: none
+	}
+	table {
+		border-collapse: collapse;
+		border-spacing: 0
+	}
+	caption,th,td {
+		font-weight: normal;
+		text-align: left
+	}
+	sup,sub {
+		font-size: .75cm;
+		position: relative;
+		vertical-align: middle
+	}
+	sup {
+		bottom: 0.4cm
+	}
+	sub {
+		top: 0.4cm
+	}
+}

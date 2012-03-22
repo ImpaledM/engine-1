@@ -1,5 +1,5 @@
 <?
-
+//test
 class admin extends sections {
 
 	public $newParent, $admin_brief=true;
@@ -57,8 +57,14 @@ class admin extends sections {
 	}
 
 	function brief () {
+		if (!isset($_GET['nameclass']) && (isset($_GET['ADMIN']) || $_GET['path']=='admin' || $_GET['path']=='users')) {
+			XML::from_db('/','SELECT title FROM meta_tags WHERE id=1', null, 'meta');
+		}
 		if ((trim(@$_GET ['path'],'/') == 'admin' || isset($_GET['ADMIN']) || isset($_GET['REFRESH']) || isset($_GET['EDIT'])) && @$_SESSION['user']['position'] == 'superadmin') {
 			XML::from_array('/', $this->ar, 'sections');
+		} elseif ($_GET['path']=='admin') {
+			header ( 'Location: /' );
+			exit ();
 		}
 	}
 
@@ -114,11 +120,11 @@ class admin extends sections {
 				if (intval ( $id ) == 0)
 				$id = 'NULL';
 				$this->db->query ( 'INSERT `section` SET
-      `name`=?, 
+      `name`=?,
       `alias`=?,
       `module`=?,
-      `sub_module`=?, 
-      `present`=?,           
+      `sub_module`=?,
+      `present`=?,
       `id_parent`=!', array ($_POST ['name'], $_POST ['alias'], $_POST ['module'], $_POST ['sub_module'], @$_POST ['present_anywhere'], $id ) );
 				$id = $this->db->last_id ();
 				$_POST ['section_present'] [$id] = $id;
@@ -140,11 +146,11 @@ class admin extends sections {
 				$alias_old = $this->db->get_one ( 'SELECT `alias` FROM `section` WHERE `id`=?', $id );
 				$present_old = $this->db->get_one ( 'SELECT `present` FROM `section` WHERE `id`=?', $id );
 				$this->db->query ( 'UPDATE `section` SET
-			`name`=?, 
+			`name`=?,
 			`alias`=?,
 			`module`=?,
 			`sub_module`=?,
-			`present`=?		
+			`present`=?
 			WHERE `id`=?', array ($_POST ['name'], $_POST ['alias'], $_POST ['module'], $_POST ['sub_module'], @$_POST ['present_anywhere'], $id ) );
 				if ($_POST ['alias'] != $alias_old) {
 					$this->create_path ( $id );
@@ -156,7 +162,7 @@ class admin extends sections {
 					$this->db->query ( 'DELETE FROM `meta_tags` WHERE id_section=?', $id );
 				}
 			}
-				
+
 			// сброс
 			if (isset ( $_POST ['present_reset'] )) {
 				$this->db->query ( 'DELETE FROM `section_present` WHERE `id2`=?', $id );

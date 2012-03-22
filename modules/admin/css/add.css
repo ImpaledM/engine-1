@@ -1,0 +1,191 @@
+@CHARSET "UTF-8";
+
+h4.alert_error {
+	background: url("../images/icn_alert_error.png") no-repeat scroll 10px
+		10px #F3D9D9;
+	border: 1px solid #D20009;
+	border-radius: 5px 5px 5px 5px;
+	color: #7B040F;
+	display: block;
+	font-size: 14px;
+	margin: 20px auto;
+	padding: 10px;
+	text-indent: 40px;
+	width: 40%;
+}
+
+.login {
+	width: 300px;
+	margin: 0 auto;
+	background: none;
+	float: none;
+}
+
+.login header h3 {
+	display: block;
+	float: left;
+	width: 90%;
+	color: #1F1F20;
+	font-size: 13px;
+	margin: 8px 20px;
+	text-shadow: 0 1px 0 #FFFFFF;
+	text-transform: uppercase;
+}
+
+.login fieldset {
+	padding: 0 0 10px;
+}
+
+.login fieldset input:focus {
+	border: 1px solid #77BACE;
+	box-shadow: 0 2px 2px #CCCCCC inset, 0 0 10px #ADDCE6;
+	outline: medium none;
+}
+
+.login fieldset input {
+	background-position: 10px 6px;
+	border: 1px solid #BBBBBB;
+	border-radius: 5px 5px 5px 5px;
+	box-shadow: 0 2px 2px #CCCCCC inset, 0 1px 0 #FFFFFF;
+	color: #666666;
+	display: block;
+	float: left;
+	height: 20px;
+	margin: 0 10px;
+	padding-left: 10px;
+	width: 225px;
+}
+
+.login fieldset label {
+	margin-top: 5px;
+}
+
+.star {
+	color: #D61709;
+	margin-right: 5px;
+	float: left;
+}
+
+fieldset {
+	padding: 7px;
+}
+
+td,th {
+	vertical-align: middle;
+	text-align: left;
+}
+
+header#header h1.site_title {
+	width: 100%;
+}
+
+#tree li {
+	cursor: pointer;
+}
+
+.helper {
+	border: 1px dashed #777777;
+	background-color: #e1ffb3;
+}
+
+.ui-widget input,.ui-widget select,.ui-widget textarea,.ui-widget button
+	{
+	width: 95%;
+}
+
+a:link,a:visited {
+	color: #666666;
+	text-decoration: underline;
+}
+
+.control {
+	padding: 10px;
+}
+
+#main h4.alert_error {
+	padding: 0px 40px 10px;
+	width: auto;
+}
+
+fieldset textarea {
+	height: 80px;
+	margin: 10px;
+}
+
+fieldset label {
+	clear: both;
+	margin: 15px 10px 0 0;
+	width: auto;
+}
+
+fieldset input[type="text"],fieldset textarea,fieldset select {
+	color: #000;
+	padding: 2px;
+	font-size: 14px;
+}
+
+fieldset input[type="checkbox"] {
+	margin: 9px;
+}
+
+fieldset span.mceEditor {
+	color: #666666;
+	display: block;
+	float: left;
+	margin: 0 10px;
+	width: 96%;
+}
+
+#photo_anons_show,.limit {
+	float: left;
+	margin: 10px;
+}
+
+#sidebar li a {
+	font-size: 14px;
+}
+
+#photo_anons_show,#photo_show {
+	clear: both;
+}
+
+#sidebar li {
+	margin-left: 10px;
+}
+
+.message {
+	margin: 15px auto;
+	padding: 15px 15px 15px 65px;
+	width: 500px;
+}
+
+ul.message li {
+	background: none repeat scroll 0 0 transparent !important;
+	list-style-type: none !important;
+	padding: 0 !important;
+}
+
+.error {
+	background: url("/img/error.gif") no-repeat scroll 5px center #FAD8D8;
+	border: 1px solid #963939;
+}
+
+.success {
+	background: url("/img/success.gif") no-repeat scroll 5px center #D9FAD8;
+	border: 1px solid #419639;
+}
+
+.notice {
+	background: url("/img/info.gif") no-repeat scroll 5px center #D9FAD8;
+	border: 1px solid #419639;
+	color: #000;
+	text-shadow: none;
+	font-weight: normal;
+}
+
+form table {
+	clear:both;
+}
+form table th {
+	text-align:center;
+}
