@@ -21,6 +21,7 @@
 						</p>
 					</div>
 					<div class="breadcrumbs_container">
+					<xsl:if test="//DEBUG=1">
 						<article class="breadcrumbs">
 							<xsl:choose>
 								<xsl:when test="not(//requests/get/sort) and not(//requests/get/meta)">
@@ -49,6 +50,7 @@
 								</xsl:otherwise>
 							</xsl:choose>
 						</article>
+						</xsl:if>
 					</div>
 				</section>
 				<aside id="sidebar" class="column">
@@ -135,6 +137,8 @@
 			<xsl:apply-templates select="sections" />
 		</xsl:if>
 	</xsl:template>
+
+	 <xsl:template match="*" mode="admin"/>
 
 	<xsl:template match="sections">
 		<xsl:if test="not(//requests/get/REFRESH)">

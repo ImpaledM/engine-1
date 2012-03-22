@@ -2,7 +2,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 	<xsl:output indent="yes" />
 
-	<xsl:template match="sub_login">
+	<xsl:template match="sub_login" mode="login">
 		<xsl:apply-templates mode="login" />
 	</xsl:template>
 
@@ -34,8 +34,6 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-
-	<xsl:template match="*" mode="login" />
 
 	<xsl:template match="form_login" mode="login">
 

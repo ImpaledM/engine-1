@@ -276,8 +276,24 @@ class Module extends Cache{
 		return $id;
 	}
 
-	function item($id) {
-		$ar = XML::from_db ( '/', 'SELECT * FROM `' . $this->table . '`WHERE `id`="' . $id . '"', null, null );
+	function item($id, $query='',$params=null) {
+		$ar = ($query=='')
+		? XML::from_db ( '/', 'SELECT * FROM `' . $this->table . '`WHERE `id`="' . $id . '"')
+		: XML::from_db ( '/', $query, $params);
+		$title = array('meta_title', 'name', 'title');
+		$description = array('meta_description', 'anons', 'description');
+		foreach ($title as $value) {
+			if (isset($ar[0][$value]) && $ar[0][$value]!='') {
+				Utils::setMeta( $ar[0][$value]);
+				break;
+			}
+		}
+		foreach ($description as $value) {
+			if (isset($ar[0][$value]) && $ar[0][$value]!='') {
+				Utils::setMeta( $ar[0][$value],'description');
+				break;
+			}
+		}
 		return $ar;
 	}
 

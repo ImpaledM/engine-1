@@ -41,7 +41,7 @@
         2
       </xsl:when>
       <xsl:otherwise>
-        <xsl:apply-templates select="CURRENT" mode="CURRENT" />
+        <xsl:apply-templates select="CURRENT" mode="CLASS" />
       </xsl:otherwise>
     </xsl:choose>
 		<!-- <xsl:apply-templates select="CURRENT" /> -->
