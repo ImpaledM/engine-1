@@ -21,7 +21,6 @@
 						</p>
 					</div>
 					<div class="breadcrumbs_container">
-						<xsl:if test="//DEBUG=1">
 							<article class="breadcrumbs">
 								<xsl:choose>
 									<xsl:when test="not(//requests/get/subclass)">
@@ -31,6 +30,7 @@
 										<a href="{$get}?ADMIN">Редактирование</a>
 									</xsl:otherwise>
 								</xsl:choose>
+								<xsl:if test="//DEBUG=1">
 								<div class="breadcrumb_divider"></div>
 								<xsl:choose>
 									<xsl:when test="//requests/get/subclass='sort'">
@@ -40,6 +40,7 @@
 										<a href="/sort/?ADMIN">Сортировка</a>
 									</xsl:otherwise>
 								</xsl:choose>
+								</xsl:if>
 								<div class="breadcrumb_divider"></div>
 								<xsl:choose>
 									<xsl:when test="//requests/get/subclass='meta_tags'">
@@ -50,7 +51,6 @@
 									</xsl:otherwise>
 								</xsl:choose>
 							</article>
-						</xsl:if>
 					</div>
 				</section>
 				<aside id="sidebar" class="column">
@@ -156,11 +156,11 @@
 									<span>Настройка</span>
 								</a>
 							</li>
-							<li>
+						<!-- <li>
 								<a href="#dialog_meta_tags">
 									<span>Мета тэги</span>
 								</a>
-							</li>
+							</li> -->
 						</ul>
 						<div id="dialog_message" />
 					</div>

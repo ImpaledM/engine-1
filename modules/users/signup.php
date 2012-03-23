@@ -3,19 +3,20 @@ class Signup extends Users{
 
 	function __construct() {
 		$this->islogin=false;
-		$field_verify = '{ "empty" : { "email" : "E-mail", "login": "Логин", "password" : "Пароль",  "repassword" : "Повтор пароля" }}';
+		$field_verify = '{ "empty" : { "email" : "E-mail",  "password" : "Пароль",  "repassword" : "Повтор пароля" }}';
 		parent::__construct ('users', null, $field_verify);
 	}
 
 	function show() {
 		if (isset ( $_GET ['hash'] )) {
-			$row = $this->db->get_row ( 'SELECT `id` FROM `' . $this->table . '` WHERE `active`="0" AND `hash`=?', array ($_GET ['hash'] ) );
+			$row = $this->db->get_row ( 'SELECT  ' . USER_FIELDS . ' FROM `' . $this->table . '` WHERE `active`="0" AND `hash`=?', array ($_GET ['hash'] ) );
 			if ($row) {
 				$this->db->query ( 'UPDATE `' . $this->table . '` SET `active`="1", `hash`="", `path`="'.get_user_path($row ['id']).'" WHERE `id`="' . $row ['id'] . '"' );
 				if (ENABLE_USER_DIR)
 				Utils::createPath ( '/'.get_user_path($row ['id'] ) );
+				$_SESSION ['user'] = $row;
+				header ( 'Location: /' );
 				Message::success ( 'Ваш аккаунт успешно активирован!' );
-				header ( 'Location: /login/' );
 				exit ();
 			} else {
 				Message::error ( 'Не существует такого аккаунта или он уже активирован!' );
@@ -30,60 +31,22 @@ class Signup extends Users{
 		}
 	}
 
-	function ajax_show() {
-		if (isset ( $_POST ['checkLogin'] )) {
-			$check = $this->checkLogin ( $_POST ['login'] );
-			$err = $check;
-			if ($check == 1)
-			$err = 'Неправильный логин!';
-			if ($check == 2)
-			$err = 'Такой логин уже существует!';
-			echo $err;
-			exit ();
-		}
-	}
 
-	function checkLogin($login = false) {
-		$stat = 0;
-		$login = trim ( $login );
-		if ($login && preg_match ( "'^[a-z0-9_-]{3,}$'i", $login )) {
-
-			$cn = $this->db->get_one ( 'SELECT COUNT(*) FROM `' . $this->table . '` WHERE `login`="' . $login . '"' );
-			if ($cn > 0)
-			$stat = 2;
-		} else
-		$stat = 1;
-		return $stat; //0 - ok | 1 - неправильный | 2 - уже существует
-	}
 
 	function verify() {
-		parent::verify ();
+		if (parent::verify ()) {
+			if (isset ( $_POST ['email'] ) && trim($_POST ['email'] )!='' && ! Utils::validEmail ( $_POST ['email'] ))
+			Message::error ( 'Некорректный E-mail!' );
 
-		if (isset ( $_POST ['email'] ) && trim($_POST ['email'] )!='' && ! Utils::validEmail ( $_POST ['email'] ))
-		Message::error ( 'Некорректный E-mail!' );
-
-		if ($this->db->get_one('SELECT COUNT(*) FROM users WHERE email=?',strtolower(trim($_POST['email'])))>0) {
-			Message::error ( 'Этот email уже зарегистрирован в системе');
-		}
-
-		if (! Message::errorState () && (trim ( @$_POST ['password'] ) != '' || trim ( @$_POST ['repassword'] ) != '') && @$_POST ['password'] != @$_POST ['repassword'])
-		Message::error ( 'Введенные пароли не совпадают!' );
-
-		if (! isset ( $_POST ['EDIT'] )) {
-			if (ENABLE_CAPTCHA_SIGNUP && @$_SESSION ['captcha'] != @$_POST ['captcha'])
-			Message::error ( 'Не правильно введен "Код подтверждения"' );
-			if (! Message::errorState ()) {
-				$code = $this->checkLogin ( $_POST ['login'] );
-				if ($code == 1)
-				Message::error ( 'Неправильный логин' );
-				if ($code == 2)
-				Message::error ( 'Такой логин уже существует!' );
+			if ($this->db->get_one('SELECT COUNT(*) FROM users WHERE email=?',strtolower(trim($_POST['email'])))>0) {
+				Message::error ( 'Этот email уже зарегистрирован в системе');
 			}
-		}
 
-		if (Message::errorState ())
-		$this->verify = false;
-		return $this->verify;
+			if ($_POST ['password'] != $_POST ['repassword'])
+			Message::error ( 'Введенные пароли не совпадают!' );
+
+		}
+		return !Message::errorState ();
 	}
 
 	function save() {

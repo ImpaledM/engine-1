@@ -100,7 +100,6 @@ class Module extends Cache{
 	}
 
 	function verify() {
-		var_dump(get_class($this),$_POST,$_GET);
 		if (isset ( $this->field_verify->empty )) {
 			foreach ( ( array ) $this->field_verify->empty as $field => $value ) {
 				if (!isset($_POST [$field]) || @$_POST [$field] == '' || (is_string($_POST [$field]) && strtoupper ( @$_POST [$field] ) == 'NULL')) {

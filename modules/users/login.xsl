@@ -2,88 +2,44 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 	<xsl:output indent="yes" />
 
-	<xsl:template match="sub_login" mode="login">
-		<xsl:apply-templates mode="login" />
-	</xsl:template>
-
-	<xsl:template match="sub_login" mode="brief">
+	<xsl:template match="sub_login" mode="admin">
 		<xsl:choose>
-			<xsl:when test="user/id">
-				<li class="first">
-					<a href="/?logout">Выход</a>
-				</li>
-				<li class="last">
-					<a href="/profile/">Профиль</a>
-				</li>
-				<li class="first">
-					<a>
-						<b>
-							Здравствуйте,
-							<xsl:value-of select="user/login" />
-						</b>
-					</a>
-				</li>
+			<xsl:when test="user/nick!=''">
+				<xsl:value-of select="user/nick" />
 			</xsl:when>
 			<xsl:otherwise>
-				<li class="first">
-					<a href="/signup/">Регистрация</a>
-				</li>
-				<li class="last">
-					<a href="/login/">Вход</a>
-				</li>
+				<xsl:value-of select="concat(user/first_name,' ', user/last_name)" />
 			</xsl:otherwise>
 		</xsl:choose>
+		<span style="float:right;">
+			<a href="/?logout">Выход</a>
+		</span>
 	</xsl:template>
 
 	<xsl:template match="form_login" mode="login">
-
-		<div class="anonses">
-			<div class="anonses_top">
-				<div class="anonses_bot">
-					<form method="post">
-						<fieldset class="response">
-							<p class="req">* поля обязательные для заполнения</p>
-
-							<div class="form-item">
-								<span class="star"> &#8727; </span>
-								<label for="login"> Login</label>
-								<input type="text" name="login" id="login" value="{//requests/post/login}" class="input-text" />
-							</div>
-
-							<div class="form-item">
-								<span class='star'> &#8727; </span>
-								<label for="password"> Пароль</label>
-								<input type="password" name="password" id="password" class="input-text" />
-							</div>
-
-							<div class="form-item">
-								<input name="remember" id="rem" type="checkbox" value="1">
-									<xsl:if test="//requests/post/remember">
-										<xsl:attribute name="checked" select="'1'" />
-									</xsl:if>
-								</input>
-								<label for="rem"> Запомнить меня</label>
-							</div>
-							<xsl:if test="//config/ENABLE_CAPTCHA_SIGNUP=1">
-								<div class="form-item">
-									<div class="capcha">
-										<img src="captcha.php" class="captcha" />
-										<span>
-											<a href="" class="reload_captcha">Обновить</a>
-										</span>
-										<span>Код подтверждения &#8727;</span>
-										<input name="captcha" class="input-short" />
-									</div>
-								</div>
-							</xsl:if>
-
-							<div class="form-item">
-								<input type="submit" name="save" value="Войти" class="input-submit" />
-							</div>
+		<div class="login">
+			<article class="module">
+				<header>
+					<h3>Вход</h3>
+				</header>
+				<form id="form_login" method="post" action="/login/">
+					<div class="module_content">
+						<fieldset>
+							<label for="nick">Логин</label>
+							<input id="nick" type="text" name="nick" />
+							<label for="password">Пароль</label>
+							<input type="password" name="password" id="password" />
 						</fieldset>
-					</form>
-				</div>
-			</div>
+						<div class="clear"></div>
+					</div>
+					<footer>
+						<div class="submit_link">
+							<input type="submit" value="Войти" name="save" />
+						</div>
+					</footer>
+				</form>
+			</article><!-- end of post new article -->
+			<div class="spacer"></div>
 		</div>
 	</xsl:template>
 
@@ -97,7 +53,7 @@
 				<div class="line">
 					<label for="login" class="field-name">
 						YPIN или Email:
-          </label>
+					</label>
 					<span class="field-value">
 						<xsl:choose>
 							<xsl:when test="//messages/login">
@@ -131,7 +87,7 @@
 					<span class="field-value">
 						На ваш email будет выслана ссылка для изменения
 						пароля
-          </span>
+					</span>
 				</div>
 			</form>
 		</div>

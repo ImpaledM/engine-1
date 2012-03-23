@@ -1,7 +1,5 @@
 <?
-define ( 'USER_FIELDS', 'id, login, password, email, role, position' );
-define ( 'COOKIE_LIFE_TIME', 3600 * 24 * 14 );
-define ( 'COOKIE_REFER_TIME', 3600 * 24 * 30 );
+define ('USER_FIELDS', 'id, email, nick, first_name, last_name, avatar, position, role' );
 class Users extends Module {
 	static function refreshUserData() {
 		$id = intval ( @$_SESSION ['user'] ['id'] );

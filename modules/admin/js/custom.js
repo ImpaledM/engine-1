@@ -5,9 +5,9 @@ $(document).ready(function() {
 		$.get(ob.attr('href'), function(data) {
 			if (data) {
 				if (ob.children('input').attr('title') == 'Добавить на главную') {
-					ob.html('<input title="Убрать с главной" src="/engine/modules/admin/images/icn_star_on.png" type="image">');
+					ob.html('<input title="Убрать с главной" src="/engine/modules/admin/images/icn_important_on.png" type="image">');
 				} else {
-					ob.html('<input title="Добавить на главную" src="/engine/modules/admin/images/icn_star_off.png" type="image">');
+					ob.html('<input title="Добавить на главную" src="/engine/modules/admin/images/icn_important_off.png" type="image">');
 				}
 			}
 		});

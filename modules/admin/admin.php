@@ -57,6 +57,9 @@ class admin extends sections {
 	}
 
 	function brief () {
+		if (!isset($_GET['nameclass']) && (isset($_GET['ADMIN']) || $_GET['path']=='admin' || $_GET['path']=='users')) {
+			XML::from_db('/','SELECT title FROM section WHERE id=1', null, 'meta');
+		}
 		if ((trim(@$_GET ['path'],'/') == 'admin' || isset($_GET['ADMIN']) || isset($_GET['REFRESH']) || isset($_GET['EDIT'])) && @$_SESSION['user']['position'] == 'superadmin') {
 			XML::from_array('/', $this->ar, 'sections');
 		} elseif ($_GET['path']=='admin') {
@@ -91,7 +94,6 @@ class admin extends sections {
 		$modules=array();
 		if ($id != '') {
 			XML::from_db ( '/', 'SELECT * FROM `section` WHERE `id`=?', $id, 'main' );
-			XML::from_db ( '/', 'SELECT `title`, `description`, `keywords` FROM `meta_tags` WHERE `id_section`=?', $id, 'meta_tags' );
 			XML::from_db ( '/', 'SELECT * FROM `section_present` WHERE id1=?', $id, 'section_present' );
 		} else {
 			XML::add_node ( '/', 'main' );
@@ -143,10 +145,10 @@ class admin extends sections {
 					$this->db->query ( 'UPDATE `section` SET `alias`=? WHERE id=?', array ($_POST ['alias'], $id ) );
 				}
 				$this->create_path ( $id );
-				if (trim ( $_POST ['title'] ) != '' || trim ( $_POST ['description'] ) != '' || trim ( $_POST ['keywords'] ) != '') {
+			/* 	if (trim ( $_POST ['title'] ) != '' || trim ( $_POST ['description'] ) != '' || trim ( $_POST ['keywords'] ) != '') {
 					$query = 'INSERT  `meta_tags` SET `title`=?, `description`=?, `keywords`=?, `id_section`=?';
 					$this->db->query ( $query, array ($_POST ['title'], $_POST ['description'], $_POST ['keywords'], $id ) );
-				}
+				} */
 				$present_old = NULL;
 			} else {
 				if (trim ( $_POST ['alias'] ) == '') {
@@ -164,12 +166,12 @@ class admin extends sections {
 				if ($_POST ['alias'] != $alias_old) {
 					$this->create_path ( $id );
 				}
-				if (trim ( $_POST ['title'] ) != '' || trim ( $_POST ['description'] ) != '' || trim ( $_POST ['keywords'] ) != '') {
+		/* 		if (trim ( $_POST ['title'] ) != '' || trim ( $_POST ['description'] ) != '' || trim ( $_POST ['keywords'] ) != '') {
 					$query = ($this->db->get_one ( 'SELECT COUNT(*) FROM `meta_tags` WHERE `id_section`=?', $id ) == 0) ? 'INSERT  `meta_tags` SET `title`=?, `description`=?, `keywords`=?, `id_section`=?' : 'UPDATE  `meta_tags` SET `title`=?, `description`=?, `keywords`=? WHERE `id_section`=?';
 					$this->db->query ( $query, array ($_POST ['title'], $_POST ['description'], $_POST ['keywords'], $id ) );
 				} else {
 					$this->db->query ( 'DELETE FROM `meta_tags` WHERE id_section=?', $id );
-				}
+				} */
 			}
 
 			// сброс

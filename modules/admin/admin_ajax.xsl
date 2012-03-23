@@ -57,7 +57,7 @@
 				</fieldset>
 			</div>
 
-			<div id="dialog_meta_tags">
+<!-- 			<div id="dialog_meta_tags">
 				<fieldset>
 					<label for="title-tag">Title</label>
 					<textarea id="title-tag" name="title">
@@ -74,7 +74,7 @@
 						<xsl:value-of select="meta_tags/item/keywords" />
 					</textarea>
 				</fieldset>
-			</div>
+			</div> -->
 
 			<div id="dialog_options" style="overflow:auto;">
 				<p>

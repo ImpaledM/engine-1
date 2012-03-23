@@ -8,64 +8,61 @@
 
 	<xsl:template match="edit" mode="signup">
 		<script type="text/javascript" src="/engine/modules/users/signup.js" />
-		<div class="anonses">
-			<div class="anonses_top">
-				<div class="anonses_bot">
-					<form method="post">
-						<fieldset class="response">
-							<p class="req">* поля обязательные для заполнения</p>
-							<div class="form-item">
-								<span class="star"> &#8727; </span>
-								<label for="login"> Логин (от 3 симв)</label>
-								<span id="login_status"></span>
-								<input type="text" name="login" id="login" value="{//requests/post/login}" class="input-text" />
-							</div>
+		<form method="post" id="form_login_basic">
+			<fieldset>
+				<i>
+					<span class="star"> &#8727; </span>
+					поля обязательные для заполнения
+				</i>
+				<dl>
+					<dt>
+						<label for="nick"> Ник :</label>
+						<span id="nick_status"></span>
+					</dt>
+					<dd>
+						<input type="text" name="nick" id="nick" value="{//requests/post/nick}" />
+					</dd>
 
-							<div class="form-item">
-								<span class="star"> &#8727; </span>
-								<label for="login"> E-mail</label>
-								<input type="text" name="email" id="email" value="{//requests/post/email}" class="input-text" />
-							</div>
+					<dt>
+						<label for="login">
+							E-mail
+							<span class="star"> &#8727; </span>
+							:
+						</label>
+					</dt>
+					<dd>
+						<input type="text" name="email" id="email" value="{//requests/post/email}" />
+					</dd>
 
-							<div class="form-item">
-								<span class='star'> &#8727; </span>
-								<label for="password"> Пароль</label>
-								<input type="password" name="password" id="password" class="input-text" />
-							</div>
+					<dt>
 
-							<div class="form-item">
-								<span class='star'> &#8727; </span>
-								<label for="repassword"> Пароль (повтор)</label>
-								<input type="password" name="repassword" id="repassword" class="input-text" />
-							</div>
+						<label for="password">
+							Пароль
+							<span class='star'> &#8727; </span>
+							:
+						</label>
+					</dt>
+					<dd>
+						<input type="password" name="password" id="password" />
+					</dd>
 
-							<div class="form-item">
-								<span class='star'> &#160;&#160; </span>
-								<label for="signature"> Подпись в отзывах</label>
-								<input type="text" name="signature" id="signature" value="{//requests/post/signature}" class="input-text" limit="100" />
-							</div>
-							<xsl:if test="//config/ENABLE_CAPTCHA_SIGNUP=1">
-								<div class="form-item">
-									<div class="capcha">
-										<img src="captcha.php" class="captcha" />
-										<span>
-											<a href="" class="reload_captcha">Обновить</a>
-										</span>
-										<span>Код подтверждения &#8727;</span>
-										<input name="captcha" class="input-short" />
-									</div>
-								</div>
-							</xsl:if>
-
-							<div class="form-item">
-								<input type="submit" name="save" value="продолжить" class="input-submit" />
-							</div>
-						</fieldset>
-					</form>
-
-				</div>
-			</div>
-		</div>
+					<dt>
+						<label for="repassword">
+							Пароль (повтор)
+							<span class='star'> &#8727; </span>
+							:
+						</label>
+					</dt>
+					<dd>
+						<input type="password" name="repassword" id="repassword" />
+					</dd>
+					<dt></dt>
+					<dd>
+						<input type="submit" name="save" value="Зарегистрироваться" />
+					</dd>
+				</dl>
+			</fieldset>
+		</form>
 	</xsl:template>
 
 	<xsl:template match="signup_info" mode="signup">
