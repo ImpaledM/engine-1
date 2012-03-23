@@ -271,7 +271,7 @@ class Utils {
 
 	static function getMeta($id) {
 		$db=new DB;
-		$current = $db->get_row ( 'SELECT title, description, keywords FROM `meta_tags` WHERE `id_section`=?', $id );
+		$current = $db->get_row ( 'SELECT title, description FROM `section` WHERE `id`=?', $id );
 		if (! $current) $_SESSION ['meta'] ['title']=$_SESSION ['meta'] ['description']=$_SESSION ['meta'] ['keywords']='';
 		else $_SESSION ['meta'] = $current;
 	}

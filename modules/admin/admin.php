@@ -57,9 +57,6 @@ class admin extends sections {
 	}
 
 	function brief () {
-		if (!isset($_GET['nameclass']) && (isset($_GET['ADMIN']) || $_GET['path']=='admin' || $_GET['path']=='users')) {
-			XML::from_db('/','SELECT title FROM meta_tags WHERE id=1', null, 'meta');
-		}
 		if ((trim(@$_GET ['path'],'/') == 'admin' || isset($_GET['ADMIN']) || isset($_GET['REFRESH']) || isset($_GET['EDIT'])) && @$_SESSION['user']['position'] == 'superadmin') {
 			XML::from_array('/', $this->ar, 'sections');
 		} elseif ($_GET['path']=='admin') {
@@ -70,7 +67,19 @@ class admin extends sections {
 
 	function show() {
 		Utils::isLogin ();
-		$this->brief();
+		if (isset($_GET['ADMIN']) && $_GET['ADMIN']!='') {
+			switch ($_GET['ADMIN']) {
+				case 'sort':
+					var_dump('sort');
+					break;
+				case 'meta':
+					$obj = new meta;
+					$meta->show();
+					break;
+			}
+		} else {
+			$this->brief('');
+		}
 	}
 
 	function ajax_delete($id) {

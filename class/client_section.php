@@ -22,6 +22,7 @@ class client_section {
 			$this->cursor ['current_path'] = $this->cursor ['current_id'];
 
 			$_SESSION ['section'] ['current_path'] = $this->cursor ['current_path'];
+
 		}
 	}
 

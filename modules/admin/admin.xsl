@@ -21,41 +21,41 @@
 						</p>
 					</div>
 					<div class="breadcrumbs_container">
-					<xsl:if test="//DEBUG=1">
-						<article class="breadcrumbs">
-							<xsl:choose>
-								<xsl:when test="not(//requests/get/sort) and not(//requests/get/meta)">
-									<a class="current">Редактирование</a>
-								</xsl:when>
-								<xsl:otherwise>
-									<a href="{$get}?ADMIN">Редактирование</a>
-								</xsl:otherwise>
-							</xsl:choose>
-							<div class="breadcrumb_divider"></div>
-							<xsl:choose>
-								<xsl:when test="//requests/get/sort">
-									<a class="current">Сортировка</a>
-								</xsl:when>
-								<xsl:otherwise>
-									<a href="{$get}?ADMIN&amp;sort">Сортировка</a>
-								</xsl:otherwise>
-							</xsl:choose>
-							<div class="breadcrumb_divider"></div>
-							<xsl:choose>
-								<xsl:when test="//requests/get/meta">
-									<a class="current">Мета-теги</a>
-								</xsl:when>
-								<xsl:otherwise>
-									<a href="{$get}?ADMIN&amp;meta">Мета-теги</a>
-								</xsl:otherwise>
-							</xsl:choose>
-						</article>
+						<xsl:if test="//DEBUG=1">
+							<article class="breadcrumbs">
+								<xsl:choose>
+									<xsl:when test="not(//requests/get/subclass)">
+										<a class="current">Редактирование</a>
+									</xsl:when>
+									<xsl:otherwise>
+										<a href="{$get}?ADMIN">Редактирование</a>
+									</xsl:otherwise>
+								</xsl:choose>
+								<div class="breadcrumb_divider"></div>
+								<xsl:choose>
+									<xsl:when test="//requests/get/subclass='sort'">
+										<a class="current">Сортировка</a>
+									</xsl:when>
+									<xsl:otherwise>
+										<a href="/sort/?ADMIN">Сортировка</a>
+									</xsl:otherwise>
+								</xsl:choose>
+								<div class="breadcrumb_divider"></div>
+								<xsl:choose>
+									<xsl:when test="//requests/get/subclass='meta_tags'">
+										<a class="current">Мета-теги</a>
+									</xsl:when>
+									<xsl:otherwise>
+										<a href="/meta_tags/?ADMIN">Мета-теги</a>
+									</xsl:otherwise>
+								</xsl:choose>
+							</article>
 						</xsl:if>
 					</div>
 				</section>
 				<aside id="sidebar" class="column">
 					<hr />
-					<xsl:apply-templates select="//content/mod_admin/sections" />
+					<xsl:apply-templates select="//content/mod_admin/sections" mode="admin" />
 					<footer>
 						<hr />
 						<p>
@@ -68,10 +68,10 @@
 				<section id="main" class="column">
 					<article class="module width_full">
 						<xsl:choose>
-							<xsl:when test="//requests/get/path!='admin'">
+							<xsl:when test="//requests/get/path!='admin' or (//requests/get/path='admin' and //requests/get/subclass) ">
 								<header>
 									<h3 class="tabs_involved">
-										<xsl:value-of select="//section/current_name" />
+										<xsl:value-of select="//requests/session/section/name" />
 									</h3>
 								</header>
 								<xsl:apply-templates select="content" />
@@ -134,13 +134,13 @@
 
 	<xsl:template match="mod_admin">
 		<xsl:if test="//requests/get/REFRESH">
-			<xsl:apply-templates select="sections" />
+			<xsl:apply-templates select="sections" mode="admin" />
 		</xsl:if>
 	</xsl:template>
 
-	 <xsl:template match="*" mode="admin"/>
+	<xsl:template match="mod_admin" mode="admin" />
 
-	<xsl:template match="sections">
+	<xsl:template match="sections" mode="admin">
 		<xsl:if test="not(//requests/get/REFRESH)">
 			<div id="dialog" style="display:none;">
 				<form id="options-form" method="post">

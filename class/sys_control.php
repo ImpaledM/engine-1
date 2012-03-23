@@ -4,7 +4,6 @@ class sys_control {
 
 	function __construct() {
 		$this->db = new DB ();
-
 		if (DEBUG == 1 && isset ( $_GET ['d'] )) {
 			$_SESSION ['d'] = '';
 		} elseif (isset ( $_GET ['d-'] )) {
@@ -17,7 +16,6 @@ class sys_control {
 	}
 
 	function show() {
-
 		global $xsl, $USER_CONSTANTS, $system_modules;
 		$xml_content = array ();
 		$sec = new client_section ();
@@ -58,6 +56,11 @@ class sys_control {
 		}
 
 		$_SESSION ['current'] = $sec->get_module_name ( $_GET ['section'] );
+		//var_dump($_GET ['section']);
+		if ($_GET['section']>0) {
+			$_SESSION ['section']['id'] = $_GET ['section'];
+			$_SESSION ['section']['name'] = $this->db->get_one('SELECT name FROM section WHERE id=?', $_GET['section']);
+		}
 		$xsl = file_get_contents ( ENGINE . 'xsl/index.sample.xsl' );
 
 
@@ -66,17 +69,20 @@ class sys_control {
 		$id_user=(isset($_SESSION['user']['id']))?intval($_SESSION['user']['id']):0;
 		$this->add_template_content();
 		//*******************************************************
+		//fb::log($present);
 		foreach ( $present as $section ) {
 			$name_class = $name_module = is_null($section ['module']) ? 'article' : $section ['module'];
 			$subclass=(isset($section['subclass'])) ? $section['subclass'] : '';
 			$path = classname_exists ( $name_module, $subclass );
 			if ($path) {
 				include_once $path.'.php';
-				if (isset ( $section ['subclass'] )) {
+				if (isset($section ['current']) && isset($_GET['ADMIN']) && $_GET['ADMIN']!='') {
+					$module = new admin;
+				} elseif (isset ( $section ['subclass'] )) {
 					$name_class = $section ['subclass'];
 					$module = new $name_class ();
 					$root_tag = 'sub_'.$section['subclass'];
-					$mod_module='mod_'.((isset ( $module->table )) ? $module->table : $name_module);
+					$mod_module='mod_'.$name_module;
 					$path = $mod_module.'/';
 				} else {
 					$module = new $name_class ();
@@ -116,7 +122,6 @@ class sys_control {
 				if (!$cache_xml) {
 					XML::add_node ( '/', $root_tag );
 					if (! isset ( $section ['current'] ) && method_exists ( $module, 'brief' )) {
-
 						// бриф запускается всегда на клиентской стороне, на админской же если нужно запустить бриф необходимо добавить	$this->admin_brief=true;
 						if (! isset ( $_GET ['ADMIN'] ) || (isset ( $module->admin_brief ) && $module->admin_brief)) {
 							$module->brief ( $section ['id'] );

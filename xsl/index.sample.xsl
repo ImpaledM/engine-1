@@ -5,7 +5,7 @@
 	<xsl:include href="./xsl/head.xsl" />
 	<xsl:include href="./engine/xsl/templates.xsl" />
 	<xsl:include href="./xsl/templates.xsl" />
-	<!--include modules-->
+	<!--include modules -->
 
 	<xsl:template match="root">
 		<html>
@@ -19,8 +19,8 @@
 					<xsl:attribute name="style">background-color:#ffffff;</xsl:attribute>
 				</xsl:if>
 				<xsl:if test="DEBUG=1">
-          <xsl:attribute name="rel">debug</xsl:attribute>
-        </xsl:if>
+					<xsl:attribute name="rel">debug</xsl:attribute>
+				</xsl:if>
 				<xsl:apply-templates select="//mod_admin_menu" />
 				<xsl:call-template name="body" />
 			</body>
@@ -33,18 +33,7 @@
 	</xsl:template>
 
 	<xsl:template name="current">
-    <xsl:choose>
-      <xsl:when test="//requests/get/sort">
-        1
-      </xsl:when>
-      <xsl:when test="//requests/get/meta">
-        2
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:apply-templates select="CURRENT" mode="CLASS" />
-      </xsl:otherwise>
-    </xsl:choose>
-		<!-- <xsl:apply-templates select="CURRENT" /> -->
+		<xsl:apply-templates select="CURRENT" mode="CLASS" />
 	</xsl:template>
 
 </xsl:stylesheet>
