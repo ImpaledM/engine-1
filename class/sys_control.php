@@ -56,10 +56,9 @@ class sys_control {
 		}
 
 		$_SESSION ['current'] = $sec->get_module_name ( $_GET ['section'] );
-		//var_dump($_GET ['section']);
+
 		if ($_GET['section']>0) {
-			$_SESSION ['section']['id'] = $_GET ['section'];
-			$_SESSION ['section']['name'] = $this->db->get_one('SELECT name FROM section WHERE id=?', $_GET['section']);
+			$_SESSION ['section'] = $this->db->get_row('SELECT id, name, module, path AS current_path FROM section WHERE id=?', $_GET['section']);
 		}
 		$xsl = file_get_contents ( ENGINE . 'xsl/index.sample.xsl' );
 
