@@ -30,7 +30,7 @@
 										<a href="{$get}?ADMIN">Редактирование</a>
 									</xsl:otherwise>
 								</xsl:choose>
-								<xsl:if test="//DEBUG=1">
+								<xsl:if test="//mod_admin/sort=1">
 								<div class="breadcrumb_divider"></div>
 								<xsl:choose>
 									<xsl:when test="//requests/get/subclass='sort'">

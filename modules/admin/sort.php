@@ -10,6 +10,7 @@ class sort extends Module {
 	}
 
 	function get_list() {
-		XML::from_db('/', 'SELECT id, name FROM ! WHERE id_section=? ORDER BY sort', array($_SESSION['section']['module'], $_SESSION['section']['id']),'list_admin');
+		$res=$this->db->query('SHOW COLUMNS FROM `!` where `Field` = "sort"', $_SESSION['section']['module']);
+		if ($this->db->num_rows($res)==1)	XML::from_db('/', 'SELECT id, name FROM ! WHERE id_section=? ORDER BY sort', array($_SESSION['section']['module'], $_SESSION['section']['id']),'list_admin');
 	}
 }
