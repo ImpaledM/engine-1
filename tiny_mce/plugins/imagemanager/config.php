@@ -21,7 +21,7 @@
         // Preview options
         $mcImageManagerConfig['preview.wwwroot'] = ''; // absolute or relative from this script path, try to leave blank system figures it out.
         //$mcImageManagerConfig['preview.urlprefix'] = "{proto}://{host}/"; // domain name
-        $mcImageManagerConfig['preview.urlprefix'] = "/200x200"; // domain name
+        //$mcImageManagerConfig['preview.urlprefix'] = "/200x200"; // domain name
         $mcImageManagerConfig['preview.urlsuffix'] = "";
         $mcImageManagerConfig['preview.allow_export'] = "urlprefix,urlsuffix";
         $mcImageManagerConfig['preview.allow_override'] = "*";
@@ -35,8 +35,8 @@
         $mcImageManagerConfig['filesystem'] = "Moxiecode_LocalFileImpl";
         $mcImageManagerConfig['filesystem.path'] = $_SERVER['DOCUMENT_ROOT'].'/file/'; // absolute or relative from this script path, optional.
         $mcImageManagerConfig['filesystem.rootpath'] = $_SERVER['DOCUMENT_ROOT'].'/file/'; // absolute or relative from this script path, required.
-        
-        
+
+
         $mcImageManagerConfig['filesystem.datefmt'] = "Y-m-d H:i";
         $mcImageManagerConfig['filesystem.include_directory_pattern'] = '';
         $mcImageManagerConfig['filesystem.exclude_directory_pattern'] = '/^mcith$/i';

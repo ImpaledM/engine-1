@@ -148,6 +148,7 @@ class Module extends Cache{
 	}
 
 	function save($id = null, $message = false) {
+		$_POST['id_section']=$_GET['section'];
 		if (isset($_SESSION['user']) && $_SESSION['user']['role']!=1 && isset($this->field_verify->none_save)){
 			$mode=(is_null($id))?1:2;
 			foreach ( ( array ) $this->field_verify->none_save as $field=>$value)
