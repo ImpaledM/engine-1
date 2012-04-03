@@ -82,6 +82,16 @@ class Login extends Users {
 	}
 
 	function brief() {
+
+		$s = file_get_contents('http://ulogin.ru/token.php?token=' . $_POST['token'] . '&host=' . $_SERVER['HTTP_HOST']);
+		$user = json_decode($s, true);
+		XML::from_array('/', $user);
+		fb::log($user);
+		//$user['network'] - соц. сеть, через которую авторизовался пользователь
+		//$user['identity'] - уникальная строка определяющая конкретного пользователя соц. сети
+		//$user['first_name'] - имя пользователя
+		//$user['last_name'] - фамилия пользователя
+
 		if (isset ( $_REQUEST ['logout'] )) {
 			$this->db->query ( 'UPDATE `' . $this->table . '` SET `date_last`=(NOW()-INTERVAL 2 MINUTE) WHERE `id`="' . $_SESSION ['user'] ['id'] . '"' );
 			unset ( $_SESSION ['user'] );

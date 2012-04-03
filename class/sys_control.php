@@ -50,7 +50,7 @@ class sys_control {
 				$system_present [] = $module_present;
 			}
 		}
-		fb::dump('present',$present);
+		//fb::dump('present',$present);
 		if (isset ( $system_present )) {
 			$present = array_merge ( $system_present, $present );
 		}
