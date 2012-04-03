@@ -101,7 +101,7 @@ class client_section {
 		$ar = array_reverse ( $ar, true );
 		$id_current = @$_GET ['section'];
 		if ($_SESSION['current']=='article' && isset($_GET['ITEM']) && $this->db->get_one('SELECT COUNT(*) FROM article WHERE id_section=?',$_GET['section'])>1) {
-  		$mites [] = array ('path' => '', 'name' => $this->db->get_one('SELECT title FROM article WHERE id=?',$_GET['ITEM']));
+  		$mites [] = array ('path' => '', 'name' => $this->db->get_one('SELECT name FROM article WHERE id=?',$_GET['ITEM']));
 		}
 		foreach ( $ar as $id => $ar_id ) {
 			if (in_array ( $id_current, $ar_id )) {
