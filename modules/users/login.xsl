@@ -2,6 +2,24 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 	<xsl:output indent="yes" />
 
+	<xsl:template match="sub_login" mode="brief_login">
+		<xsl:choose>
+			<xsl:when test="user/id">
+				<b><xsl:value-of select="concat(user/first_name,' ',user/last_name)" /></b>
+				&#160;&#160;
+					<a href="/?logout">Выход</a>
+			</xsl:when>
+			<xsl:otherwise>
+				Войти:&#160;
+				<xsl:if test="//DEBUG!=1">
+				<script src="http://ulogin.ru/js/ulogin.js" />
+				<div id="uLogin"
+					x-ulogin-params="display=small&amp;fields=first_name,last_name,photo&amp;providers=vkontakte,odnoklassniki,mailru,facebook&amp;hidden=twitter,google,yandex,livejournal,openid&amp;redirect_uri=http%3A%2F%2Fazovskaya-riviera.com.ua" />
+					</xsl:if>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
 	<xsl:template match="sub_login" mode="admin">
 		<xsl:choose>
 			<xsl:when test="user/nick!=''">
