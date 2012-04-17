@@ -1,8 +1,8 @@
 jQuery.fn.upload = function(table, field, options) {
 	var settings = jQuery.extend({
 		multi : false,
-		width : 1000,
-		height : 750,
+		width : 800,
+		height : 600,
 		buttonText : 'Upload',
 		buttonImg : '/engine/modules/ajax/uploadify/upload.gif',
 		widthBtn : 118,

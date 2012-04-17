@@ -12,8 +12,8 @@ Class Xml {
 	public static function transform($root_tag_name = false, $xsl_filename, $xml = null, $debug = false) {
 		$xml = self::protect_xml ( $xml );
 		$xml_filename=substr(basename($_SERVER['PHP_SELF']),0,-4);
+        $xml = $xml->saveXML();
 
-//       XML::debug();
 		if ( defined ( 'DEBUG' ) && DEBUG == 1 ){
 			self::debug ( $xml, $xml_filename );
 		}
@@ -67,7 +67,6 @@ Class Xml {
 					$inputdom->loadXML($xml);
 					$xml=$inputdom;
 				}else{
-					var_dump($xml);
 					die('некорректный XML');
 				}
 			}
@@ -75,6 +74,7 @@ Class Xml {
 			if (!(self::$dom instanceof DOMDocument)) {
 				die('self::$dom not instance of DOMDocument');
 			}
+
 			$xml=&self::$dom;
 		}
 		return $xml;
@@ -98,7 +98,7 @@ Class Xml {
 	 */
 
 	public static function debug($xml=null,$filename=null) {
-		$xml=self::protect_xml($xml);
+	  //	$xml=self::protect_xml($xml);
 		$xml->formatOutput = true;
 		if (is_string($filename)) {
 			$xml->save(XML.basename($filename).'.xml');

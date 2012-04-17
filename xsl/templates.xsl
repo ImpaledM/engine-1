@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" xmlns:dyn="http://exslt.org/dynamic" xmlns:str="http://exslt.org/strings" extension-element-prefixes="str">
-	<xsl:variable name="get" select="concat('/', //section/current_path, '/')" />
-	<xsl:variable name="get_ajax" select="concat('/__', //section/current_path, '/')" />
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	version="1.0" xmlns:dyn="http://exslt.org/dynamic" xmlns:str="http://exslt.org/strings"
+	extension-element-prefixes="str">
+	<xsl:variable name="get"	select="concat('/', //section/current_path, '/')" />
+	<xsl:variable name="get_ajax"	select="concat('/__', //section/current_path, '/')" />
 
 	<xsl:template match="*" mode="brief" />
 
@@ -137,12 +139,16 @@
 	<xsl:template name="ending">
 		<xsl:param name="number" select="0" />
 		<xsl:param name="words" />
-		<!-- Строка вариантов склонения (3 штуки), разделённых запятой. например "франшиза,франшизы,франшиз" -->
+		<!-- Строка вариантов склонения (3 штуки), разделённых запятой. например
+			"франшиза,франшизы,франшиз" -->
 		<xsl:variable name="word1" select="substring-before($words,',')" />
-		<xsl:variable name="word2" select="substring-before(substring-after($words,','),',')" />
-		<xsl:variable name="word3" select="substring-after(substring-after($words,','),',')" />
+		<xsl:variable name="word2"
+			select="substring-before(substring-after($words,','),',')" />
+		<xsl:variable name="word3"
+			select="substring-after(substring-after($words,','),',')" />
 		<xsl:choose>
-			<xsl:when test="(($number mod 100) &gt;= 5) and (($number mod 100) &lt;= 20)">
+			<xsl:when
+				test="(($number mod 100) &gt;= 5) and (($number mod 100) &lt;= 20)">
 				<xsl:value-of select="$word3" />
 			</xsl:when>
 			<xsl:when test="$number mod 10 = 1">
@@ -166,7 +172,8 @@
 				<xsl:value-of select="substring-before($text,$replace)" />
 				<xsl:value-of select="$by" />
 				<xsl:call-template name="str_replace">
-					<xsl:with-param name="text" select="substring-after($text,$replace)" />
+					<xsl:with-param name="text"
+						select="substring-after($text,$replace)" />
 					<xsl:with-param name="replace" select="$replace" />
 					<xsl:with-param name="by" select="$by" />
 				</xsl:call-template>
@@ -184,7 +191,8 @@
 			<xsl:when test="contains($string,'&#10;')">
 				<br />
 				<xsl:call-template name="nl2br">
-					<xsl:with-param name="string" select="substring-after($string,'&#10;')" />
+					<xsl:with-param name="string"
+						select="substring-after($string,'&#10;')" />
 				</xsl:call-template>
 			</xsl:when>
 			<xsl:otherwise>
@@ -217,7 +225,6 @@
 		<xsl:param name="num" select="500" />
 		<xsl:param name="delim" select="' '" />
 		<xsl:param name="end" select="'...'" />
-		<xsl:param name="path" />
 		<xsl:choose>
 			<xsl:when test="string-length($str) &gt; $num">
 				<xsl:variable name="txt" select="substring($str, 1, $num)" />
@@ -226,16 +233,7 @@
 						<xsl:value-of select="concat(., $delim )" />
 					</xsl:if>
 				</xsl:for-each>
-				<xsl:choose>
-					<xsl:when test="$path!=''">
-						<a href="/{$path}/">
-							<xsl:value-of select="$end" />
-						</a>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:value-of select="$end" />
-					</xsl:otherwise>
-				</xsl:choose>
+				<xsl:value-of select="$end" />
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="$str" />

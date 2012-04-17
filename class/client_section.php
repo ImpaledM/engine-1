@@ -101,15 +101,19 @@ class client_section {
 		$ar = array_reverse ( $ar, true );
 		$id_current = @$_GET ['section'];
 		if ($_SESSION['current']=='article' && isset($_GET['ITEM']) && $this->db->get_one('SELECT COUNT(*) FROM article WHERE id_section=?',$_GET['section'])>1) {
-  		$mites [] = array ('path' => '', 'name' => $this->db->get_one('SELECT name FROM article WHERE id=?',$_GET['ITEM']));
+  		$mites [] = array ('path' => '', 'name' => $this->db->get_one('SELECT title FROM article WHERE id=?',$_GET['ITEM']));
 		}
+
+        while ($id_current!='') {
 		foreach ( $ar as $id => $ar_id ) {
 			if (in_array ( $id_current, $ar_id )) {
-				$mites [] = array ('path' => $this->add_ar [$id_current] ['path'], 'name' => $this->add_ar [$id_current] ['name'] );
-				$id_current = $id;
+				    $mites [] = array ('path' => $this->add_ar [$id_current] ['path'], 'name' => $this->add_ar [$id_current] ['name'] );
+				    $id_current = $id;
 			}
+           }
 		}
 		if (defined('MAIN_IN_MITES') && MAIN_IN_MITES) $mites [] = array ('path' => $this->add_ar [1] ['path'], 'name' => $this->add_ar [1] ['name'] );
+
 
 		return array_reverse ( $mites, true );
 	}

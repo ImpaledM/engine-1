@@ -3,23 +3,25 @@
 	<xsl:output indent="yes" />
 
 	<xsl:template match="mod_counters">
-		<xsl:apply-templates mode="counters" />
+		<xsl:apply-templates select="brief" mode="brief_counters" />
 	</xsl:template>
 
 	<xsl:template match="brief" mode="brief_counters">
-<!-- 		<xsl:if test="//DEBUG!=1"> -->
+		<xsl:if test="//DEBUG!=1">
 			<xsl:comment>
 				<xsl:text>noindex</xsl:text>
 			</xsl:comment>
-			<xsl:for-each select="item">
-			<div class="counter">
-				<xsl:value-of select="text" disable-output-escaping="yes" />
-			</div>
-			</xsl:for-each>
+            <ul class="counters">
+			    <xsl:for-each select="item">
+			        <li>
+				      <xsl:value-of select="text" disable-output-escaping="yes" />
+		        	</li>
+			    </xsl:for-each>
+            </ul>
 			<xsl:comment>
 				<xsl:text>/noindex</xsl:text>
 			</xsl:comment>
-<!-- 		</xsl:if> -->
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="edit" mode="counters">

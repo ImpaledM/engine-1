@@ -59,10 +59,8 @@ class admin extends sections {
 	function brief () {
 		if (!isset($_GET['nameclass']) && (isset($_GET['ADMIN']) || $_GET['path']=='admin' || $_GET['path']=='users')) {
 			XML::from_db('/','SELECT title FROM section WHERE id=1', null, 'meta');
-			if (isset($_SESSION['section']['module'])) {
-				$res=$this->db->query('SHOW COLUMNS FROM `!` where `Field` = "sort"', $_SESSION['section']['module']);
-				XML::add_node('/','sort',$this->db->num_rows($res));
-			}
+			$res=$this->db->query('SHOW COLUMNS FROM `!` where `Field` = "sort"', $_SESSION['section']['module']);
+			XML::add_node('/','sort',$this->db->num_rows($res));
 		}
 		if ((trim(@$_GET ['path'],'/') == 'admin' || isset($_GET['ADMIN']) || isset($_GET['REFRESH']) || isset($_GET['EDIT'])) && @$_SESSION['user']['position'] == 'superadmin') {
 			XML::from_array('/', $this->ar, 'sections');
@@ -137,9 +135,9 @@ class admin extends sections {
 					$this->db->query ( 'UPDATE `section` SET `alias`=? WHERE id=?', array ($_POST ['alias'], $id ) );
 				}
 				$this->create_path ( $id );
-				/* 	if (trim ( $_POST ['title'] ) != '' || trim ( $_POST ['description'] ) != '' || trim ( $_POST ['keywords'] ) != '') {
+			/* 	if (trim ( $_POST ['title'] ) != '' || trim ( $_POST ['description'] ) != '' || trim ( $_POST ['keywords'] ) != '') {
 					$query = 'INSERT  `meta_tags` SET `title`=?, `description`=?, `keywords`=?, `id_section`=?';
-				$this->db->query ( $query, array ($_POST ['title'], $_POST ['description'], $_POST ['keywords'], $id ) );
+					$this->db->query ( $query, array ($_POST ['title'], $_POST ['description'], $_POST ['keywords'], $id ) );
 				} */
 				$present_old = NULL;
 			} else {
@@ -158,11 +156,11 @@ class admin extends sections {
 				if ($_POST ['alias'] != $alias_old) {
 					$this->create_path ( $id );
 				}
-				/* 		if (trim ( $_POST ['title'] ) != '' || trim ( $_POST ['description'] ) != '' || trim ( $_POST ['keywords'] ) != '') {
+		/* 		if (trim ( $_POST ['title'] ) != '' || trim ( $_POST ['description'] ) != '' || trim ( $_POST ['keywords'] ) != '') {
 					$query = ($this->db->get_one ( 'SELECT COUNT(*) FROM `meta_tags` WHERE `id_section`=?', $id ) == 0) ? 'INSERT  `meta_tags` SET `title`=?, `description`=?, `keywords`=?, `id_section`=?' : 'UPDATE  `meta_tags` SET `title`=?, `description`=?, `keywords`=? WHERE `id_section`=?';
-				$this->db->query ( $query, array ($_POST ['title'], $_POST ['description'], $_POST ['keywords'], $id ) );
+					$this->db->query ( $query, array ($_POST ['title'], $_POST ['description'], $_POST ['keywords'], $id ) );
 				} else {
-				$this->db->query ( 'DELETE FROM `meta_tags` WHERE id_section=?', $id );
+					$this->db->query ( 'DELETE FROM `meta_tags` WHERE id_section=?', $id );
 				} */
 			}
 
