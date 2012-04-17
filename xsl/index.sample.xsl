@@ -15,7 +15,6 @@
 				<xsl:call-template name="head" />
 			</head>
 			<body>
-
 				<xsl:if test="//requests/get/d">
 					<xsl:attribute name="style">background-color:#ffffff;</xsl:attribute>
 				</xsl:if>
@@ -35,7 +34,6 @@
 
 	<xsl:template name="current">
 		<xsl:apply-templates select="CURRENT" mode="CLASS" />
-
 	</xsl:template>
 
 </xsl:stylesheet>

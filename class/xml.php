@@ -13,7 +13,6 @@ Class Xml {
 		$xml = self::protect_xml ( $xml );
 		$xml_filename=substr(basename($_SERVER['PHP_SELF']),0,-4);
 
-//       XML::debug();
 		if ( defined ( 'DEBUG' ) && DEBUG == 1 ){
 			self::debug ( $xml, $xml_filename );
 		}
