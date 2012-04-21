@@ -194,3 +194,7 @@ form table th {
     margin: 0 3px 3px;
     padding: 0.4em 0.4em 0.4em 1.5em;
 }
+
+#sections ul {
+	margin-left: 10px;
+}
