@@ -101,15 +101,19 @@ class client_section {
 		$ar = array_reverse ( $ar, true );
 		$id_current = @$_GET ['section'];
 		if ($_SESSION['current']=='article' && isset($_GET['ITEM']) && $this->db->get_one('SELECT COUNT(*) FROM article WHERE id_section=?',$_GET['section'])>1) {
-  		$mites [] = array ('path' => '', 'name' => $this->db->get_one('SELECT name FROM article WHERE id=?',$_GET['ITEM']));
+			$mites [] = array ('path' => '', 'name' => $this->db->get_one('SELECT name FROM article WHERE id=?',$_GET['ITEM']));
 		}
-		foreach ( $ar as $id => $ar_id ) {
-			if (in_array ( $id_current, $ar_id )) {
-				$mites [] = array ('path' => $this->add_ar [$id_current] ['path'], 'name' => $this->add_ar [$id_current] ['name'] );
-				$id_current = $id;
+
+		while ($id_current!='') {
+			foreach ( $ar as $id => $ar_id ) {
+				if (in_array ( $id_current, $ar_id )) {
+					$mites [] = array ('path' => $this->add_ar [$id_current] ['path'], 'name' => $this->add_ar [$id_current] ['name'] );
+					$id_current = $id;
+				}
 			}
 		}
 		if (defined('MAIN_IN_MITES') && MAIN_IN_MITES) $mites [] = array ('path' => $this->add_ar [1] ['path'], 'name' => $this->add_ar [1] ['name'] );
+
 
 		return array_reverse ( $mites, true );
 	}
@@ -200,12 +204,14 @@ class client_section {
 			else {
 				ERROR::status(404);
 				//header("Location: /errors/?STATUS=404");
-				die();
+				//die();
 			}
 		}
 	}
 	function get_module_name($id) {
-		return $this->db->get_one ( 'SELECT `module` FROM `section` WHERE `id`=!', $id );
+		if (intval($id)>0) {
+			return $this->db->get_one ( 'SELECT `module` FROM `section` WHERE `id`=!', $id );
+		}
 	}
 
 	function get_present($id) {

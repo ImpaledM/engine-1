@@ -93,7 +93,6 @@ class Login extends Users {
 				$_SESSION['user']['avatar']=$user['photo'];
 				$_SESSION['user']['identity']=$user['identity'];
 			}
-		fb::log($user);
 		}
 
 		if (isset ( $_REQUEST ['logout'] )) {

@@ -270,15 +270,17 @@ class Utils {
 	}
 
 	static function getMeta($id) {
-		$db=new DB;
-		$current = $db->get_row ( 'SELECT title, description FROM `section` WHERE `id`=?', $id );
-		if (! $current) $_SESSION ['meta'] ['title']=$_SESSION ['meta'] ['description']=$_SESSION ['meta'] ['keywords']='';
-		else $_SESSION ['meta'] = $current;
+		if (intval($id)>0) {
+			$db=new DB;
+			$current = $db->get_row ( 'SELECT title, description, keywords FROM `section` WHERE `id`=?', $id );
+			if (! $current) $_SESSION ['meta'] ['title']=$_SESSION ['meta'] ['description']=$_SESSION ['meta'] ['keywords']='';
+			else $_SESSION ['meta'] = $current;
+		}
 	}
 
 	static function clearUrl($url = false) {
 		if ($url)
-			$url = rtrim(str_replace ( array ('http://', 'https://' ), '', $url ),'/');
+		$url = rtrim(str_replace ( array ('http://', 'https://' ), '', $url ),'/');
 		return $url;
 	}
 

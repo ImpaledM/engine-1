@@ -19,12 +19,10 @@ class sys_control {
 		global $xsl, $USER_CONSTANTS, $system_modules;
 		$xml_content = array ();
 		$sec = new client_section ();
-
 		Utils::getMeta($_GET ['section']);
 		$main = $main_contact = $main_special = $main_news = null;
 		$alias = $_GET['path'] = (isset($_GET['path'])) ? trim ( @$_GET ['path'], '/' ):'';
 		$id = (in_array ( $alias, $system_modules ['anywhere'] ) || in_array ( $alias, $system_modules ['only_self'] )) ? null : $_GET ['section'];
-
 		$present = $sec->get_present ( $id );
 		if (!$present) $present=array();
 		foreach ( $system_modules ['anywhere'] as $key => $value ) {

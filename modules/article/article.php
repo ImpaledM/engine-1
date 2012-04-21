@@ -31,6 +31,7 @@ class article extends Module {
 	function item( $id ){
 		$ar=parent::item( $id );
 		XML::from_db( '//item', 'SELECT `name`, `note` FROM `'.$this->table.'_file` WHERE id_parent="' . $id . '" AND field="photo"', null, 'photo' );
+
 	}
 
 	function save( $id=null ){

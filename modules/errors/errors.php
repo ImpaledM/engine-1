@@ -4,6 +4,6 @@ class errors {
 	}
 	function show() {
 		Error::status ( intval ( $_GET ['STATUS'] ) );
-	
+
 	}
 }
