@@ -1,7 +1,7 @@
 <?
 class article extends Module {
 	function __construct(){
-		$field_verify='{ "empty" : { "name" : "Заголовок",  "text" : "Полный текст"}}';
+		$field_verify='{ "empty" : { "name" : "Заголовок"}}';
 		$field_rules='{"photo_one" : "photo_anons",	"photo_multi" : "photo"}';
 		parent::__construct( 'article', $field_rules, $field_verify );
 	}

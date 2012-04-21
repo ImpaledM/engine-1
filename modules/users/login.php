@@ -93,8 +93,8 @@ class Login extends Users {
 				$_SESSION['user']['avatar']=$user['photo'];
 				$_SESSION['user']['identity']=$user['identity'];
 			}
+		fb::log($user);
 		}
-		//fb::log($user);
 
 		if (isset ( $_REQUEST ['logout'] )) {
 			$this->db->query ( 'UPDATE `' . $this->table . '` SET `date_last`=(NOW()-INTERVAL 2 MINUTE) WHERE `id`="' . $_SESSION ['user'] ['id'] . '"' );
