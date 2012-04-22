@@ -122,7 +122,7 @@ class sys_control {
 						// бриф запускается всегда на клиентской стороне, на админской же если нужно запустить бриф необходимо добавить	$this->admin_brief=true;
 						if (! isset ( $_GET ['ADMIN'] ) || (isset ( $module->admin_brief ) && $module->admin_brief)) {
 							$module->brief ( $section ['id'] );
-              //fb::dump('brief', $section);
+							//fb::dump('brief', $section);
 						}
 					} else {
 						$module->show ( $section ['id'] );
@@ -182,13 +182,14 @@ class sys_control {
 		XML::add_node ( '/', 'requests' );
 		XML::from_array ( '/root/requests', $_POST, 'post' );
 		XML::from_array ( '/root/requests', $_GET, 'get' );
-		$ses=$_SESSION;
-		unset($ses['messages']);
-		XML::from_array ( '/root/requests', $ses, 'session' );
-		foreach ( $_SESSION ['meta'] as $k => &$v )
-		$v = Utils::trimText ( $v, 250 );
-		XML::from_array ( '/', $_SESSION ['meta'], 'mod_meta_tags' );
+
+		if (isset($_SESSION ['meta'])) {
+			foreach ( $_SESSION ['meta'] as $k => &$v ) $v = Utils::trimText ( $v, 250 );
+			XML::from_array ( '/', $_SESSION ['meta'], 'mod_meta_tags' );
+		}
+
 		XML::from_array ( '/', Message::get () );
+		XML::from_array ( '/root/requests', $_SESSION, 'session' );
 		XML::add_node ( '/', 'date_time' );
 		XML::add_node ( '//date_time', 'date', date ( "d.m.Y" ) );
 		XML::add_node ( '//date_time', 'time', date ( "H:i:s" ) );

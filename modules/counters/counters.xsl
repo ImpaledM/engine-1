@@ -7,7 +7,6 @@
 	</xsl:template>
 
 	<xsl:template match="brief" mode="brief_counters">
-		<xsl:if test="//DEBUG!=1">
 			<xsl:comment>
 				<xsl:text>noindex</xsl:text>
 			</xsl:comment>
@@ -21,7 +20,6 @@
 			<xsl:comment>
 				<xsl:text>/noindex</xsl:text>
 			</xsl:comment>
-		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="edit" mode="counters">
