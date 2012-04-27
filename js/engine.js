@@ -364,10 +364,14 @@ $(document).ready(function() {
 		$.datepicker.setDefaults($.datepicker.regional['ru']);
 		$('input[rel="date"], input[rel="datetime"], input.date').livequery(function() {
 			$(this).datepicker({
-				gotoCurrent : true,
+				showOn: "button",
+				buttonImage: "i/calend.png",
+				buttonImageOnly: true,
+				gotoCurrent : true
+				/*,
 				changeMonth : true,
 				changeYear : true,
-				yearRange : '2010:2020'
+				yearRange : '2010:2020'*/
 			});
 		});
 	}
