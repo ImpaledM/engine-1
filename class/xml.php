@@ -1,5 +1,6 @@
 <?
 Class Xml {
+	// test GIT
 	static $dom,$root,$header_xml=true;
 	/**
 	 * Совмещение xml и xsl
