@@ -14,6 +14,20 @@ $(document).ready(function() {
 		return false;
 	});
 
+	$('a.hit_ajax').click(function() {
+		var ob = $(this);
+		$.get(ob.attr('href'), function(data) {
+			if (data) {
+				if (ob.children('input').attr('title') == 'Добавить в хиты') {
+					ob.html('<input title="Убрать из хитов" src="/engine/modules/admin/images/icn_star_on.png" type="image">');
+				} else {
+					ob.html('<input title="Добавить в хиты" src="/engine/modules/admin/images/icn_star_off.png" type="image">');
+				}
+			}
+		});
+		return false;
+	});
+	
 	$('a.new_ajax').click(function() {
 		var ob = $(this);
 		$.get(ob.attr('href'), function(data) {
