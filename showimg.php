@@ -16,7 +16,7 @@ function viewFoto($name, $w = 0, $h = 0) {
 				$img = imagecreatefromjpeg ( ROOT . $name );
 				break;
 			default :
-				exit ();
+				die ('unsupported file type');
 		}
 		$w_old = imagesx ( $img );
 		$h_old = imagesy ( $img );
