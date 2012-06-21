@@ -19,7 +19,7 @@ class client_section {
 			$this->cursor ['current_id'] = $_GET ['section'];
 
 			if ($this->cursor ['current_path'] == '' || $this->cursor ['current_path'] == null)
-			$this->cursor ['current_path'] = $this->cursor ['current_id'];
+				$this->cursor ['current_path'] = $this->cursor ['current_id'];
 
 			$_SESSION ['section'] ['current_path'] = $this->cursor ['current_path'];
 
@@ -37,7 +37,7 @@ class client_section {
 		array_push ( $this->children_id, $id );
 		$row = $this->db->get_all ( 'SELECT `id` FROM `section` WHERE `id_parent`=?', array (
 
-		$id ) );
+				$id ) );
 		foreach ( $row as $key => $value ) {
 			$this->get_children_id ( $value ['id'] );
 		}
@@ -56,7 +56,7 @@ class client_section {
 		while ( $row = $this->db->fetch ( $res ) ) {
 			$ar [$row ['id_parent']] [] = $row ['id'];
 			if (trim ( $row ['path'] ) == '')
-			$row ['path'] = $row ['id'];
+				$row ['path'] = $row ['id'];
 			$this->add_ar [$row ['id']] = $row;
 		}
 		return $ar;
@@ -67,12 +67,12 @@ class client_section {
 			if (isset ( $this->ar [$i] [$j] )) {
 				$id_sect = $this->ar [$i] [$j];
 				$this->mites [] = array (
-				$i, $j );
+						$i, $j );
 			} else
-			$id_sect = 0;
+				$id_sect = 0;
 			$this->index [] = array (
 
-			'id' => ( int ) $id_sect, 'level' => count ( $this->mites ) );
+					'id' => ( int ) $id_sect, 'level' => count ( $this->mites ) );
 			$this->pass ( $id_sect, 0 );
 		} else {
 			if ($i == 0) {
@@ -95,8 +95,7 @@ class client_section {
 		}
 	}
 
-	function get_mites() {
-		$mites = array ();
+	function get_mites() {		
 		$ar = $this->ar_full;
 		$ar = array_reverse ( $ar, true );
 		$id_current = @$_GET ['section'];
@@ -107,6 +106,7 @@ class client_section {
 		while ($id_current!='') {
 			foreach ( $ar as $id => $ar_id ) {
 				if (in_array ( $id_current, $ar_id )) {
+					if (!isset($mites)) $this->add_ar [$id_current] ['path']='';
 					$mites [] = array ('path' => $this->add_ar [$id_current] ['path'], 'name' => $this->add_ar [$id_current] ['name'] );
 					$id_current = $id;
 				}
@@ -120,7 +120,7 @@ class client_section {
 
 	function show($tag_name = null, $id_feed = null) {
 		if (! $tag_name)
-		$tag_name = 'section';
+			$tag_name = 'section';
 		$this->ar = $this->get_section ();
 
 		$this->ar_full = $this->ar;

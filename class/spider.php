@@ -142,7 +142,10 @@ class Spider {
 			$handle = @fopen ( $url, "r" );
 			if ($handle) {
 				$ar = stream_get_meta_data ( $handle );
-				return ($ar ['wrapper_data'] ['headers'][0]=='' || $ar ['wrapper_data'] [0] == 'HTTP/1.1 200 OK' || $ar ['wrapper_data'] [0] == 'HTTP/1.1 302 Found');
+
+				return ($ar ['wrapper_data'] [0] == 'HTTP/1.1 200 OK' || $ar ['wrapper_data'] [0] == 'HTTP/1.1 302 Found');
+				//return ($ar ['wrapper_data'] ['headers'][0]=='' || $ar ['wrapper_data'] [0] == 'HTTP/1.1 200 OK' || $ar ['wrapper_data'] [0] == 'HTTP/1.1 302 Found');
+
 			} else {
 				return false;
 			}

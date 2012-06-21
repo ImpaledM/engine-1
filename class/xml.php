@@ -1,6 +1,6 @@
 <?
 Class Xml {
-	// test GIT
+
 	static $dom,$root,$header_xml=true;
 	/**
 	 * Совмещение xml и xsl
@@ -13,6 +13,8 @@ Class Xml {
 	public static function transform($root_tag_name = false, $xsl_filename, $xml = null, $debug = false) {
 		$xml = self::protect_xml ( $xml );
 		$xml_filename=substr(basename($_SERVER['PHP_SELF']),0,-4);
+
+//       XML::debug();
 
 		if ( defined ( 'DEBUG' ) && DEBUG == 1 ){
 			self::debug ( $xml, $xml_filename );

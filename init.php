@@ -1,5 +1,4 @@
 <?
-//1
 setlocale ( LC_ALL, 'ru_RU.UTF-8' );
 mb_internal_encoding("UTF-8");
 mb_regex_encoding("UTF-8");
@@ -12,6 +11,7 @@ if (isset ( $_SERVER ['SERVER_NAME'] ))
 	define ( 'DOMAIN', 'http://' . $_SERVER ['SERVER_NAME'] . '/' );
 else
 	define ( 'DOMAIN', 'http://' . DOMAIN_CLEAR . '/' );
+
 
 define ( 'ENGINE', ROOT . 'engine/' );
 define ( 'MODULES', ENGINE . 'modules/' );
