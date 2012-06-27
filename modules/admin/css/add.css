@@ -125,7 +125,8 @@ fieldset input[type="text"],fieldset input[type="file"],fieldset textarea,fields
 }
 
 fieldset input[type="checkbox"], fieldset input[type="file"] {
-	margin: 9px;
+	/*margin: 9px;*/
+	margin-top: 22px;
 }
 
 fieldset span.mceEditor {
