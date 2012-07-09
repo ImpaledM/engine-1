@@ -32,11 +32,6 @@ class sections {
 		$res = $this->db->query($query);		 
 		while ( $row = $this->db->fetch ( $res ) ) {
 			$ar [intval ( $row ['id_parent'] )] [$row ['id']] = $row;
-            /*southofeast*/
-            if (('/'.$row['path'])==$_SERVER['REQUEST_URI']) {
-              $ar [intval ( $row ['id_parent'] )][$row ['id']]['active']=1;
-            }
-            /*southofeast*/
 			$this->ar_plain[$row['id']]=$row;
 		}
 		$ar=array_reverse($ar,true);

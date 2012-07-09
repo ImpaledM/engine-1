@@ -11,13 +11,13 @@
 			<xsl:comment>
 				<xsl:text>noindex</xsl:text>
 			</xsl:comment>
-            <ul class="counters">
-			    <xsl:for-each select="item">
-			        <li>
-				      <xsl:value-of select="text" disable-output-escaping="yes" />
-		        	</li>
-			    </xsl:for-each>
-            </ul>
+			<ul class="counters">
+				<xsl:for-each select="item">
+					<li>
+						<xsl:value-of select="text" disable-output-escaping="yes" />
+					</li>
+				</xsl:for-each>
+			</ul>
 			<xsl:comment>
 				<xsl:text>/noindex</xsl:text>
 			</xsl:comment>
@@ -76,7 +76,7 @@
 										<xsl:value-of select="name" />
 									</td>
 									<td>
-									<xsl:value-of select="text" disable-output-escaping="yes" />
+										<xsl:value-of select="text" disable-output-escaping="yes" />
 									</td>
 									<td>
 										<xsl:choose>
