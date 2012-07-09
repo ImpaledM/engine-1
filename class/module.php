@@ -281,6 +281,10 @@ class Module extends Cache{
 		$ar = ($query=='')
 		? XML::from_db ( '/', 'SELECT * FROM `' . $this->table . '`WHERE `id`="' . $id . '"')
 		: XML::from_db ( '/', $query, $params);
+		return $ar;
+	}
+	
+	function setMeta($ar) {
 		$title = array('meta_title', 'name', 'title');
 		$description = array('meta_description', 'anons', 'description');
 		foreach ($title as $value) {
@@ -295,7 +299,6 @@ class Module extends Cache{
 				break;
 			}
 		}
-		return $ar;
 	}
 
 	function get_list($query = '', $param = null, $item_on_page = false, $visible_pages = VISIBLE_PAGES) {
