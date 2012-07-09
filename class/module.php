@@ -82,7 +82,7 @@ class Module extends Cache{
 		XML::add_node ( '/', 'edit' );
 		if (! empty ( $_POST )) {
 			XML::from_array ( '//edit', array ($_POST ) );
-		} elseif ($id) {
+		} else {
 			if ($this->islogin) {
 				return XML::from_db( '//edit', 'SELECT '.$fields.' FROM `'.$this->table.'` WHERE `id`=? AND (`id_user`=? OR ?&1=1)', array($id, $_SESSION['user']['id'], $_SESSION['user']['role']));
 			} else {
