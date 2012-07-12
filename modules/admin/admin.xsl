@@ -213,14 +213,14 @@
 					<div class="sections">
 						<xsl:choose>
 							<xsl:when test="//section/current_id=id">
-								<a href="{path}/?ADMIN">
+								<a href="/{path}/?ADMIN">
 									<b>
 										<xsl:value-of select="name" />
 									</b>
 								</a>
 							</xsl:when>
 							<xsl:otherwise>
-								<a href="{path}/?ADMIN">
+								<a href="/{path}/?ADMIN">
 									<xsl:value-of select="name" />
 								</a>
 							</xsl:otherwise>
