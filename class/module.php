@@ -28,7 +28,12 @@ class Module extends Cache{
 		$this->rules = json_decode ( $field_rules );
 		$this->field_verify = json_decode ( $field_verify );
 		$this->db = new Db ();
-		$this->table =(!$table) ? get_class($this) : $table;
+		if ($table) {
+			$lang = (isset($_GET['lang'])) ? '_'.$_GET['lang'] : '';
+			$this->table=($this->db->table_seek($table.$lang)) ? $table.$lang : $table;
+		} else {
+			$this->table=get_class($this);
+		}
 	}
 
 	function is_owner($id){
@@ -94,9 +99,9 @@ class Module extends Cache{
 
 	function active($id) {
 		if ($this->is_owner($id))
-		exit ($this->db->query ( 'UPDATE `' . $this->table . '` SET active=NOT(active) WHERE id="' . $id.'"'));
+			exit ($this->db->query ( 'UPDATE `' . $this->table . '` SET active=NOT(active) WHERE id="' . $id.'"'));
 		else
-		exit(Error::status(403));
+			exit(Error::status(403));
 	}
 
 	function verify() {
@@ -154,7 +159,7 @@ class Module extends Cache{
 		if (isset($_SESSION['user']) && $_SESSION['user']['role']!=1 && isset($this->field_verify->none_save)){
 			$mode=(is_null($id))?1:2;
 			foreach ( ( array ) $this->field_verify->none_save as $field=>$value)
-			if (isset($_POST [$field]) && ($value==$mode || $value==3)) unset($_POST [$field]);
+				if (isset($_POST [$field]) && ($value==$mode || $value==3)) unset($_POST [$field]);
 		}
 
 		if (!is_null($id) && !$this->is_owner($id)) {
@@ -164,16 +169,16 @@ class Module extends Cache{
 
 		if (! isset ( $_POST ['alias'] )) {
 			if (isset ( $_POST ['title'] ))
-			$_POST ['alias'] = translitUrl ( $_POST ['title'] );
+				$_POST ['alias'] = translitUrl ( $_POST ['title'] );
 			if (isset ( $_POST ['name'] ))
-			$_POST ['alias'] = translitUrl ( $_POST ['name'] );
+				$_POST ['alias'] = translitUrl ( $_POST ['name'] );
 		}
 		$fields = $params = array ();
 		$field_active = false;
 		$res = $this->db->query ( 'SHOW COLUMNS FROM !', $this->table );
 		while ( $row = $this->db->fetch ( $res ) ) {
 			if ($row ['Field'] == 'active')
-			$field_active = true;
+				$field_active = true;
 			if ($row ['Field'] == 'id_city' && isset ( $this->rules->city)) {
 				$fields [$row ['Field']] = '`' . $row ['Field'] . '`=?';
 				$params [] = $this->save_city ();
@@ -283,7 +288,7 @@ class Module extends Cache{
 		: XML::from_db ( '/', $query, $params);
 		return $ar;
 	}
-	
+
 	function setMeta($ar) {
 		$title = array('meta_title', 'name', 'title');
 		$description = array('meta_description', 'anons', 'description');
@@ -311,9 +316,9 @@ class Module extends Cache{
 			if (!$item_on_page)	$item_on_page = $this->item_on_page_admin;
 		} else {
 			if ($query == '')
-			$query2 .= ' FROM ' . $this->table . ' AS t';
+				$query2 .= ' FROM ' . $this->table . ' AS t';
 			if ($this->where != '')
-			$this->where = ' WHERE ' . $this->where;
+				$this->where = ' WHERE ' . $this->where;
 			$tag_name = 'list';
 			if ($item_on_page===false) {
 				$item_on_page = $this->item_on_page_client;
@@ -325,7 +330,7 @@ class Module extends Cache{
 		}
 
 		if (! isset ( $_GET ['PAGE'] ))
-		$_GET ['PAGE'] = 1;
+			$_GET ['PAGE'] = 1;
 		if (intval ( $item_on_page) > 0) {
 			$query .= ' LIMIT ' . ($item_on_page * ($_GET['PAGE'] - 1)) . ', ' . $item_on_page;
 		}
@@ -335,7 +340,7 @@ class Module extends Cache{
 		} else {
 			$ar = XML::from_db('/', $query, $param, $tag_name);
 			if (!$ar)
-			XML::add_node('/',$tag_name);
+				XML::add_node('/',$tag_name);
 		}
 
 		if (intval($item_on_page) > 0) {

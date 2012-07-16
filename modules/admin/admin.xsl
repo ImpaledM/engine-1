@@ -21,16 +21,16 @@
 						</p>
 					</div>
 					<div class="breadcrumbs_container">
-							<article class="breadcrumbs">
-								<xsl:choose>
-									<xsl:when test="not(//requests/get/subclass)">
-										<a class="current">Редактирование</a>
-									</xsl:when>
-									<xsl:otherwise>
-										<a href="{$get}?ADMIN">Редактирование</a>
-									</xsl:otherwise>
-								</xsl:choose>
-								<xsl:if test="//mod_admin/sort=1">
+						<article class="breadcrumbs">
+							<xsl:choose>
+								<xsl:when test="not(//requests/get/subclass) and not(//lang)">
+									<a class="current">Редактирование</a>
+								</xsl:when>
+								<xsl:otherwise>
+									<a href="{$get}?ADMIN">Редактирование</a>
+								</xsl:otherwise>
+							</xsl:choose>
+							<xsl:if test="//mod_admin/sort=1">
 								<div class="breadcrumb_divider"></div>
 								<xsl:choose>
 									<xsl:when test="//requests/get/subclass='sort'">
@@ -40,17 +40,34 @@
 										<a href="/sort/?ADMIN">Сортировка</a>
 									</xsl:otherwise>
 								</xsl:choose>
-								</xsl:if>
-								<div class="breadcrumb_divider"></div>
-								<xsl:choose>
-									<xsl:when test="//requests/get/subclass='meta_tags'">
-										<a class="current">Мета-теги</a>
-									</xsl:when>
-									<xsl:otherwise>
-										<a href="/meta_tags/?ADMIN">Мета-теги</a>
-									</xsl:otherwise>
-								</xsl:choose>
-							</article>
+							</xsl:if>
+							<div class="breadcrumb_divider"></div>
+							<xsl:choose>
+								<xsl:when test="//requests/get/subclass='meta_tags'">
+									<a class="current">Мета-теги</a>
+								</xsl:when>
+								<xsl:otherwise>
+									<a href="/meta_tags/?ADMIN">Мета-теги</a>
+								</xsl:otherwise>
+							</xsl:choose>
+							<xsl:if test="//LANG_ARRAY">
+								<xsl:for-each select="//LANG_ARRAY/item">
+									<div class="breadcrumb_divider"></div>
+									<xsl:choose>
+										<xsl:when test="key=//lang">
+											<a class="current">
+												<xsl:value-of select="value" />
+											</a>
+										</xsl:when>
+										<xsl:otherwise>
+											<a href="{$get}?ADMIN&amp;lang={key}">
+												<xsl:value-of select="value" />
+											</a>
+										</xsl:otherwise>
+									</xsl:choose>
+								</xsl:for-each>
+							</xsl:if>
+						</article>
 					</div>
 				</section>
 				<aside id="sidebar" class="column">
@@ -156,11 +173,7 @@
 									<span>Настройка</span>
 								</a>
 							</li>
-						<!-- <li>
-								<a href="#dialog_meta_tags">
-									<span>Мета тэги</span>
-								</a>
-							</li> -->
+							<!-- <li> <a href="#dialog_meta_tags"> <span>Мета тэги</span> </a> </li> -->
 						</ul>
 						<div id="dialog_message" />
 					</div>

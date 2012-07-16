@@ -181,5 +181,10 @@ class db {
 		}
 		return $results;
 	}
+
+	function table_seek($table) {
+		$res = $this->query('SHOW TABLES FROM '.DBNAME.' LIKE ?',$table);
+		return mysql_num_rows($res) > 0;
+	}
 }
 ?>
