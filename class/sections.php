@@ -31,6 +31,7 @@ class sections {
 		: 'SELECT * FROM '.$this->module;		
 		$res = $this->db->query($query);		 
 		while ( $row = $this->db->fetch ( $res ) ) {
+			if ($row['id']==1) $row['path']=''; 
 			$ar [intval ( $row ['id_parent'] )] [$row ['id']] = $row;
 			$this->ar_plain[$row['id']]=$row;
 		}

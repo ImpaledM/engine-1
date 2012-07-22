@@ -153,6 +153,7 @@ class Module extends Cache{
 	}
 
 	function save($id = null, $message = false) {
+		//var_dump($_GET);die();
 		if (!isset($_POST['id_section']) && isset($_GET['section']))	$_POST['id_section']=$_GET['section'];
 		//var_dump($_POST);die();
 
@@ -182,8 +183,9 @@ class Module extends Cache{
 			if ($row ['Field'] == 'id_city' && isset ( $this->rules->city)) {
 				$fields [$row ['Field']] = '`' . $row ['Field'] . '`=?';
 				$params [] = $this->save_city ();
-			} elseif (isset ( $_POST [$row ['Field']] )) {
+			} elseif (isset ( $_POST [$row ['Field']] ) && !is_array($_POST [$row ['Field']])) {
 				//TODO не проходят NULL
+				//var_dump($_POST [$row ['Field']]);
 				$fields [$row ['Field']] = '`' . $row ['Field'] . '`';
 				$fields [$row ['Field']] .= (strtoupper ( $_POST [$row ['Field']] ) == 'NULL') ? '=!' : '=?';
 				if (isset ( $this->rules->photo_one ) && in_array ( $row ['Field'], ( array ) $this->rules->photo_one )) {
@@ -286,6 +288,7 @@ class Module extends Cache{
 		$ar = ($query=='')
 		? XML::from_db ( '/', 'SELECT * FROM `' . $this->table . '`WHERE `id`="' . $id . '"')
 		: XML::from_db ( '/', $query, $params);
+		$this->setMeta($ar);
 		return $ar;
 	}
 
@@ -303,6 +306,16 @@ class Module extends Cache{
 				Utils::setMeta( $ar[0][$value],'description');
 				break;
 			}
+		}
+	}
+	
+  //объединить с таким же модулем в engine/modules/admin.php 
+	function verify_sort() {
+		if (isset($_SESSION['section']['module'])) {
+			$res=$this->db->query('SHOW COLUMNS FROM `!` where `Field` = "sort"', $_SESSION['section']['module']);
+			return $this->db->num_rows($res);
+		} else {
+			return false;
 		}
 	}
 
@@ -326,6 +339,7 @@ class Module extends Cache{
 		}
 
 		if ($query == '') {
+			if ($this->verify_sort()) $this->order='sort';
 			$query = $query2 . $this->where . ' ORDER BY ' . $this->order;
 		}
 
@@ -342,16 +356,15 @@ class Module extends Cache{
 			if (!$ar)
 				XML::add_node('/',$tag_name);
 		}
-
 		if (intval($item_on_page) > 0) {
-			$dip = new Div_into_pages($item_on_page, $visible_pages, $_GET['PAGE']);
 			$count_item=$this->db->get_one('SELECT FOUND_ROWS()');
-			$pages = $dip->get_pages($count_item);
-
-			//var_dump($this->db->get_one('SELECT FOUND_ROWS()'));
-			XML::from_array('//' . $tag_name, $pages, 'pages');
-			XML::add_node('//pages', 'get', GET('PAGE'));
-			XML::add_node('//pages', 'count_item', $count_item);
+			if ($count_item>1) {
+				$dip = new Div_into_pages($item_on_page, $visible_pages, $_GET['PAGE']);
+				$pages = $dip->get_pages($count_item);
+				XML::from_array('//' . $tag_name, $pages, 'pages');
+				XML::add_node('//pages', 'get', GET('PAGE'));
+				XML::add_node('//pages', 'count_item', $count_item);
+			}
 		}
 
 		return $ar;

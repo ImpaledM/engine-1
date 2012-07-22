@@ -5,7 +5,7 @@ $(document).ready(function() {
 		opacity : 0.5,
 		update: function() {
       sort = $('#sortable').sortable('toArray'); // массив с порядком
-      $.post('__sort',{cmd: 'save', sort: sort});
+      $.post('/__sort/',{cmd: 'save', sort: sort});
    }
 	});
 });

@@ -12,6 +12,8 @@ class sys_control {
 		if (empty ( $_GET ['section'] )) {
 			$_GET ['section'] = 1;
 		}
+		//var_dump($_GET ['section']);
+		//if ($_GET ['section'] == 1) unset($_GET ['path']);		
 		if (isset($_POST)) $_POST = safety ( $_POST );
 	}
 
@@ -56,7 +58,12 @@ class sys_control {
 		$_SESSION ['current'] = $sec->get_module_name ( $_GET ['section'] );
 
 		if ($_GET['section']>0) {
-			$_SESSION ['section'] = $this->db->get_row('SELECT id, name, module, path AS current_path FROM section WHERE id=?', $_GET['section']);
+			$_SESSION ['section'] = $this->db->get_row('SELECT id, name, path AS current_path FROM section WHERE id=?', $_GET['section']);
+		}
+		//var_dump($_SESSION ['current']);
+		if (isset($_SESSION ['current'])) {
+			$current = new $_SESSION ['current'];
+	  $_SESSION ['section']['module']=$current->table;
 		}
 		$xsl = file_get_contents ( ENGINE . 'xsl/index.sample.xsl' );
 
