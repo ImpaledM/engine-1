@@ -8,6 +8,7 @@ class gallery extends Module {
 	}
 
 	function add($id = false) {
+		
 		Utils::isLogin ();
 		if (! empty ( $_POST ))
 			XML::from_array ( '/', array ($_POST ), 'edit' );
@@ -20,11 +21,11 @@ class gallery extends Module {
 					Message::error ( 'Доступ запрещен или не существует такой записи!' );
 			}
 		}
-		if (! Message::errorState ())
-			XML::add_node ( '/', 'add' );
+
 	}
 
 	function get_list() {
+
 		if (isset ( $_GET ['ADMIN'] )) {
 			Utils::isLogin ();
 			$ars = parent::get_list ( 'SELECT * FROM `' . $this->table . '` ORDER BY `sort`' );
