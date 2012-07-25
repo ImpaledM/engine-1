@@ -11,6 +11,7 @@
 	<xsl:template match="root">
 		<html>
 			<head>
+				<base href="{domain}" />
 				<meta charset="utf-8" />
 				<xsl:call-template name="head" />
 			</head>
