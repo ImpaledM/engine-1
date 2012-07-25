@@ -12,11 +12,13 @@ class sys_control {
 		if (empty ( $_GET ['section'] )) {
 			$_GET ['section'] = 1;
 		}
+		//var_dump($_GET ['section']);
+		//if ($_GET ['section'] == 1) unset($_GET ['path']);		
 		if (isset($_POST)) $_POST = safety ( $_POST );
 	}
 
 	function show() {
-		global $xsl, $USER_CONSTANTS, $system_modules;
+		global $xsl, $USER_CONSTANTS, $system_modules, $LANG_ARRAY;
 		$xml_content = array ();
 		$sec = new client_section ();
 		Utils::getMeta($_GET ['section']);
@@ -28,12 +30,12 @@ class sys_control {
 		foreach ( $system_modules ['anywhere'] as $key => $value ) {
 			$module_present = array ('id' => NULL, 'module' => $value );
 			if (! is_numeric ( $key ))
-			$module_present += array ('subclass' => $key );
+				$module_present += array ('subclass' => $key );
 			if ($alias == $value) {
 				if (! isset ( $_GET ['subclass'] ) || (isset ( $_GET ['subclass'] ) && $_GET ['subclass'] == $key)) {
 					$module_present += array ('current' => '' );
 				} else
-				$system_present [] = $module_present;
+					$system_present [] = $module_present;
 				$module_present = array ('id' => NULL, 'module' => $value, 'subclass' => @$_GET ['subclass'], 'current' => '' );
 			}
 			$system_present [] = $module_present;
@@ -43,7 +45,7 @@ class sys_control {
 			if ($alias == $value) {
 				$module_present = array ('id' => NULL, 'module' => $value, 'current' => '' );
 				if (isset ( $_GET ['subclass'] ))
-				$module_present += array ('subclass' => $_GET ['subclass'] );
+					$module_present += array ('subclass' => $_GET ['subclass'] );
 
 				$system_present [] = $module_present;
 			}
@@ -56,7 +58,12 @@ class sys_control {
 		$_SESSION ['current'] = $sec->get_module_name ( $_GET ['section'] );
 
 		if ($_GET['section']>0) {
-			$_SESSION ['section'] = $this->db->get_row('SELECT id, name, module, path AS current_path FROM section WHERE id=?', $_GET['section']);
+			$_SESSION ['section'] = $this->db->get_row('SELECT id, name, path AS current_path FROM section WHERE id=?', $_GET['section']);
+		}
+		//var_dump($_SESSION ['current']);
+		if (isset($_SESSION ['current'])) {
+			$current = new $_SESSION ['current'];
+	  $_SESSION ['section']['module']=$current->table;
 		}
 		$xsl = file_get_contents ( ENGINE . 'xsl/index.sample.xsl' );
 
@@ -179,6 +186,14 @@ class sys_control {
 		XML::add_node ( '/', 'domain', DOMAIN );
 		XML::add_node ( '/', 'domain_clear', DOMAIN_CLEAR );
 		XML::add_node ( '/', 'url', GET ( 'DEL' ) );
+
+		if (isset($LANG_ARRAY)) {
+			XML::from_array('/', $LANG_ARRAY, 'LANG_ARRAY');
+			if (isset($_GET['lang'])) {
+				XML::add_node ( '/', 'lang', $_GET['lang']);
+			}
+		}
+
 		XML::add_node ( '/', 'requests' );
 		XML::from_array ( '/root/requests', $_POST, 'post' );
 		XML::from_array ( '/root/requests', $_GET, 'get' );
@@ -203,7 +218,7 @@ class sys_control {
 	function add_template_content() {
 		global $xsl;
 		if (file_exists ( ROOT . 'xsl/content.xsl' ))
-		$xsl = preg_replace ( "'<!--\s*include modules\s*-->'i", '<xsl:include href="'.ROOT . 'xsl/content.xsl"/><!--include modules-->', $xsl );
+			$xsl = preg_replace ( "'<!--\s*include modules\s*-->'i", '<xsl:include href="'.ROOT . 'xsl/content.xsl"/><!--include modules-->', $xsl );
 	}
 
 
@@ -215,7 +230,7 @@ class sys_control {
 		? $name_module . '/' . $self_xsl . '.xsl'
 		: $name_module . '/' . $name_module . '.xsl';
 		if (file_exists ( MODULES_LOCAL . $path_suffix ))
-		$path = MODULES_LOCAL . $path_suffix;
+			$path = MODULES_LOCAL . $path_suffix;
 		elseif (file_exists ( MODULES . $path_suffix))
 		$path = MODULES . $path_suffix;
 

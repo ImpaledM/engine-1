@@ -7,7 +7,7 @@
 	</xsl:template>
 
 	<xsl:template match="brief" mode="brief_counters">
-		<xsl:if test="//DEBUG!=1">
+		<xsl:if test="//DEBUG!=1 or //requests/get/counters">
 			<xsl:comment>
 				<xsl:text>noindex</xsl:text>
 			</xsl:comment>

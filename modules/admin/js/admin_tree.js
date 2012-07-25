@@ -41,7 +41,7 @@ $(document).ready(function() {
 					position : 'center',
 
 					open : function(event, ui) {
-						$.get('__admin', {
+						$.get('/__admin/', {
 							EDIT : $(el).attr('id')
 						}, function(data) {
 							$('#tabs').livequery(function() {
@@ -69,14 +69,14 @@ $(document).ready(function() {
 						"Сохранить" : function() {
 							var options = {
 								// target : '#dialog_message',
-								url : '__admin/?SAVE=' + $(el).attr('id'),
+								url : '/__admin/?SAVE=' + $(el).attr('id'),
 								success : function(data) {
 									// alert(data);
 								if (data) {
 									$('#dialog_message').html(data);
 								} else {
 									$("#dialog").dialog("close");
-									$.get('__admin/?REFRESH', function(data) {
+									$.get('/__admin/?REFRESH', function(data) {
 										$('#div_tree').replaceWith(data);
 									});
 								}
@@ -108,7 +108,7 @@ $(document).ready(function() {
 					position : 'center',
 
 					open : function(event, ui) {
-						$.get('__admin', {
+						$.get('/__admin/', {
 							EDIT : ''
 						}, function(data) {
 							$('#tabs').livequery(function() {
@@ -135,14 +135,14 @@ $(document).ready(function() {
 						"Сохранить" : function() {
 							var options = {
 								// target : '#dialog_message',
-								url : '__admin/?ADD&SAVE=' + $(el).attr('id'),
+								url : '/__admin/?ADD&SAVE=' + $(el).attr('id'),
 								success : function(data) {
 									// alert(data);
 								if (data) {
 									$('#dialog_message').html(data);
 								} else {
 									$("#dialog").dialog("close");
-									$.get('__admin/?REFRESH', function(data) {
+									$.get('/__admin/?REFRESH', function(data) {
 										$('#div_tree').replaceWith(data);
 									});
 								}
@@ -167,10 +167,10 @@ $(document).ready(function() {
 				var title = 'Удаление';
 				jConfirm('Вы уверены, что хотите удалить?', title, function(r) {
 					if (r) {
-						$.get('__admin', {
+						$.get('/__admin/', {
 							DELETE : $(el).attr('id')
 						}, function() {
-							$.get('__admin/?REFRESH', function(data) {
+							$.get('/__admin/?REFRESH', function(data) {
 								$('#div_tree').replaceWith(data);
 							});
 						});

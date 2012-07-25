@@ -28,7 +28,12 @@ class Module extends Cache{
 		$this->rules = json_decode ( $field_rules );
 		$this->field_verify = json_decode ( $field_verify );
 		$this->db = new Db ();
-		$this->table =(!$table) ? get_class($this) : $table;
+		if ($table) {
+			$lang = (isset($_GET['lang'])) ? '_'.$_GET['lang'] : '';
+			$this->table=($this->db->table_seek($table.$lang)) ? $table.$lang : $table;
+		} else {
+			$this->table=get_class($this);
+		}
 	}
 
 	function is_owner($id){
@@ -94,9 +99,9 @@ class Module extends Cache{
 
 	function active($id) {
 		if ($this->is_owner($id))
-		exit ($this->db->query ( 'UPDATE `' . $this->table . '` SET active=NOT(active) WHERE id="' . $id.'"'));
+			exit ($this->db->query ( 'UPDATE `' . $this->table . '` SET active=NOT(active) WHERE id="' . $id.'"'));
 		else
-		exit(Error::status(403));
+			exit(Error::status(403));
 	}
 
 	function verify() {
@@ -148,13 +153,14 @@ class Module extends Cache{
 	}
 
 	function save($id = null, $message = false) {
+		//var_dump($_GET);die();
 		if (!isset($_POST['id_section']) && isset($_GET['section']))	$_POST['id_section']=$_GET['section'];
 		//var_dump($_POST);die();
 
 		if (isset($_SESSION['user']) && $_SESSION['user']['role']!=1 && isset($this->field_verify->none_save)){
 			$mode=(is_null($id))?1:2;
 			foreach ( ( array ) $this->field_verify->none_save as $field=>$value)
-			if (isset($_POST [$field]) && ($value==$mode || $value==3)) unset($_POST [$field]);
+				if (isset($_POST [$field]) && ($value==$mode || $value==3)) unset($_POST [$field]);
 		}
 
 		if (!is_null($id) && !$this->is_owner($id)) {
@@ -164,21 +170,22 @@ class Module extends Cache{
 
 		if (! isset ( $_POST ['alias'] )) {
 			if (isset ( $_POST ['title'] ))
-			$_POST ['alias'] = translitUrl ( $_POST ['title'] );
+				$_POST ['alias'] = translitUrl ( $_POST ['title'] );
 			if (isset ( $_POST ['name'] ))
-			$_POST ['alias'] = translitUrl ( $_POST ['name'] );
+				$_POST ['alias'] = translitUrl ( $_POST ['name'] );
 		}
 		$fields = $params = array ();
 		$field_active = false;
 		$res = $this->db->query ( 'SHOW COLUMNS FROM !', $this->table );
 		while ( $row = $this->db->fetch ( $res ) ) {
 			if ($row ['Field'] == 'active')
-			$field_active = true;
+				$field_active = true;
 			if ($row ['Field'] == 'id_city' && isset ( $this->rules->city)) {
 				$fields [$row ['Field']] = '`' . $row ['Field'] . '`=?';
 				$params [] = $this->save_city ();
-			} elseif (isset ( $_POST [$row ['Field']] )) {
+			} elseif (isset ( $_POST [$row ['Field']] ) && !is_array($_POST [$row ['Field']])) {
 				//TODO не проходят NULL
+				//var_dump($_POST [$row ['Field']]);
 				$fields [$row ['Field']] = '`' . $row ['Field'] . '`';
 				$fields [$row ['Field']] .= (strtoupper ( $_POST [$row ['Field']] ) == 'NULL') ? '=!' : '=?';
 				if (isset ( $this->rules->photo_one ) && in_array ( $row ['Field'], ( array ) $this->rules->photo_one )) {
@@ -281,9 +288,10 @@ class Module extends Cache{
 		$ar = ($query=='')
 		? XML::from_db ( '/', 'SELECT * FROM `' . $this->table . '`WHERE `id`="' . $id . '"')
 		: XML::from_db ( '/', $query, $params);
+		$this->setMeta($ar);
 		return $ar;
 	}
-	
+
 	function setMeta($ar) {
 		$title = array('meta_title', 'name', 'title');
 		$description = array('meta_description', 'anons', 'description');
@@ -300,6 +308,16 @@ class Module extends Cache{
 			}
 		}
 	}
+	
+  //объединить с таким же модулем в engine/modules/admin.php 
+	function verify_sort() {
+		if (isset($_SESSION['section']['module'])) {
+			$res=$this->db->query('SHOW COLUMNS FROM `!` where `Field` = "sort"', $_SESSION['section']['module']);
+			return $this->db->num_rows($res);
+		} else {
+			return false;
+		}
+	}
 
 	function get_list($query = '', $param = null, $item_on_page = false, $visible_pages = VISIBLE_PAGES) {
 		if ($query == '')	$query2 = 'SELECT SQL_CALC_FOUND_ROWS t.id, t.name, t.active';
@@ -311,9 +329,9 @@ class Module extends Cache{
 			if (!$item_on_page)	$item_on_page = $this->item_on_page_admin;
 		} else {
 			if ($query == '')
-			$query2 .= ' FROM ' . $this->table . ' AS t';
+				$query2 .= ' FROM ' . $this->table . ' AS t';
 			if ($this->where != '')
-			$this->where = ' WHERE ' . $this->where;
+				$this->where = ' WHERE ' . $this->where;
 			$tag_name = 'list';
 			if ($item_on_page===false) {
 				$item_on_page = $this->item_on_page_client;
@@ -321,11 +339,12 @@ class Module extends Cache{
 		}
 
 		if ($query == '') {
+			if ($this->verify_sort()) $this->order='sort';
 			$query = $query2 . $this->where . ' ORDER BY ' . $this->order;
 		}
 
 		if (! isset ( $_GET ['PAGE'] ))
-		$_GET ['PAGE'] = 1;
+			$_GET ['PAGE'] = 1;
 		if (intval ( $item_on_page) > 0) {
 			$query .= ' LIMIT ' . ($item_on_page * ($_GET['PAGE'] - 1)) . ', ' . $item_on_page;
 		}
@@ -335,18 +354,17 @@ class Module extends Cache{
 		} else {
 			$ar = XML::from_db('/', $query, $param, $tag_name);
 			if (!$ar)
-			XML::add_node('/',$tag_name);
+				XML::add_node('/',$tag_name);
 		}
-
 		if (intval($item_on_page) > 0) {
-			$dip = new Div_into_pages($item_on_page, $visible_pages, $_GET['PAGE']);
 			$count_item=$this->db->get_one('SELECT FOUND_ROWS()');
-			$pages = $dip->get_pages($count_item);
-
-			//var_dump($this->db->get_one('SELECT FOUND_ROWS()'));
-			XML::from_array('//' . $tag_name, $pages, 'pages');
-			XML::add_node('//pages', 'get', GET('PAGE'));
-			XML::add_node('//pages', 'count_item', $count_item);
+			if ($count_item>1) {
+				$dip = new Div_into_pages($item_on_page, $visible_pages, $_GET['PAGE']);
+				$pages = $dip->get_pages($count_item);
+				XML::from_array('//' . $tag_name, $pages, 'pages');
+				XML::add_node('//pages', 'get', GET('PAGE'));
+				XML::add_node('//pages', 'count_item', $count_item);
+			}
 		}
 
 		return $ar;

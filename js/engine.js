@@ -365,7 +365,7 @@ $(document).ready(function() {
 		$('input[rel="date"], input[rel="datetime"], input.date').livequery(function() {
 			$(this).datepicker({
 				showOn: "button",
-				buttonImage: "i/calend.png",
+				buttonImage: "/i/calend.png",
 				buttonImageOnly: true,
 				gotoCurrent : true
 				/*,

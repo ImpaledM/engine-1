@@ -55,14 +55,21 @@ class admin extends sections {
 		}
 		$this->create_path ( $this->newParent );
 	}
+	
+	//объединить с таким же модулем в module.php 
+	function verify_sort() {
+		if (isset($_SESSION['section']['module'])) {
+			$res=$this->db->query('SHOW COLUMNS FROM `!` where `Field` = "sort"', $_SESSION['section']['module']);
+			return XML::add_node('/','sort',$this->db->num_rows($res));
+		} else {
+			return false;
+		}
+	}
 
 	function brief () {
 		if (!isset($_GET['nameclass']) && (isset($_GET['ADMIN']) || $_GET['path']=='admin' || $_GET['path']=='users')) {
 			XML::from_db('/','SELECT title FROM section WHERE id=1', null, 'meta');
-			if (isset($_SESSION['section']['module'])) {
-				$res=$this->db->query('SHOW COLUMNS FROM `!` where `Field` = "sort"', $_SESSION['section']['module']);
-				XML::add_node('/','sort',$this->db->num_rows($res));
-			}
+			$this->verify_sort();
 		}
 		if ((trim(@$_GET ['path'],'/') == 'admin' || isset($_GET['ADMIN']) || isset($_GET['REFRESH']) || isset($_GET['EDIT'])) && @$_SESSION['user']['position'] == 'superadmin') {
 			XML::from_array('/', $this->ar, 'sections');

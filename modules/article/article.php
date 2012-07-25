@@ -21,10 +21,7 @@ class article extends Module {
 			parent::get_list( 'SELECT SQL_CALC_FOUND_ROWS id, name, photo_anons, active FROM `'.$this->table.'` WHERE (`id_user`="' . $_SESSION['user']['id'] . '" OR ?&1=1) AND `id_section`=? ORDER BY sort', array($_SESSION['user']['role'],$_GET['section']));
 		}else{
 			$ar=parent::get_list( 'SELECT SQL_CALC_FOUND_ROWS a.*, b.path FROM `'.$this->table.'` AS a, section b WHERE a.id_section=b.id AND a.`active`="1" AND a.`id_section`=?  ORDER BY sort', $_GET['section']);
-			if ($ar && count( $ar ) == 1 ) {
-				header('Location: /'.$ar[0]['path'].'/'.$ar[0]['id'].'-'.$ar[0]['alias']);
-				exit;
-			}
+			parent::setMeta($ar);
 		}
 	}
 

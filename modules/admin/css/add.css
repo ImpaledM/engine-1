@@ -73,6 +73,7 @@ fieldset {
 td,th {
 	vertical-align: middle;
 	text-align: left;
+	padding: 10px;
 }
 
 header#header h1.site_title {
@@ -118,13 +119,14 @@ fieldset label {
 	width: auto;
 }
 
-fieldset input[type="text"],fieldset input[type="file"],fieldset textarea,fieldset select {
+fieldset input[type="text"],fieldset input[type="file"],fieldset textarea,fieldset select
+	{
 	color: #000;
 	padding: 2px;
 	font-size: 14px;
 }
 
-fieldset input[type="checkbox"], fieldset input[type="file"] {
+fieldset input[type="checkbox"],fieldset input[type="file"] {
 	/*margin: 9px;*/
 	margin-top: 22px;
 }
@@ -185,17 +187,23 @@ ul.message li {
 }
 
 form table {
-	clear:both;
+	clear: both;
 }
+
 form table th {
-	text-align:center;
+	text-align: center;
 }
+
 #sortable li {
-    height: 18px;
-    margin: 0 3px 3px;
-    padding: 0.4em 0.4em 0.4em 1.5em;
+	height: 18px;
+	margin: 0 3px 3px;
+	padding: 0.4em 0.4em 0.4em 1.5em;
 }
 
 #sections ul {
 	margin-left: 10px;
+}
+
+.tablesorter td {
+	padding: 4px 10px;
 }
