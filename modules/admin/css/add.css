@@ -207,3 +207,8 @@ form table th {
 .tablesorter td {
 	padding: 4px 10px;
 }
+#print {
+	display:block;
+	float:right;
+	margin-right:10px;
+}
