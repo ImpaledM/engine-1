@@ -6,7 +6,7 @@
 	<xsl:include href="./xsl/head.xsl" />
 	<xsl:include href="./engine/xsl/templates.xsl" />
 	<xsl:include href="./xsl/templates.xsl" />
-	<!--include modules-->
+	<!-- include modules -->
 
 	<xsl:template match="root">
 		<html>
