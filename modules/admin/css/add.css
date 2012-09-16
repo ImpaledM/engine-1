@@ -118,13 +118,13 @@ fieldset label {
 	width: auto;
 }
 
-fieldset input[type="text"],fieldset textarea,fieldset select {
+fieldset input[type="text"],fieldset input[type="file"],fieldset textarea,fieldset select {
 	color: #000;
 	padding: 2px;
 	font-size: 14px;
 }
 
-fieldset input[type="checkbox"] {
+fieldset input[type="checkbox"], fieldset input[type="file"] {
 	margin: 9px;
 }
 
@@ -193,4 +193,8 @@ form table th {
     height: 18px;
     margin: 0 3px 3px;
     padding: 0.4em 0.4em 0.4em 1.5em;
+}
+
+#sections ul {
+	margin-left: 10px;
 }

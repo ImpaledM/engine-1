@@ -19,12 +19,10 @@ class sys_control {
 		global $xsl, $USER_CONSTANTS, $system_modules;
 		$xml_content = array ();
 		$sec = new client_section ();
-
 		Utils::getMeta($_GET ['section']);
 		$main = $main_contact = $main_special = $main_news = null;
 		$alias = $_GET['path'] = (isset($_GET['path'])) ? trim ( @$_GET ['path'], '/' ):'';
 		$id = (in_array ( $alias, $system_modules ['anywhere'] ) || in_array ( $alias, $system_modules ['only_self'] )) ? null : $_GET ['section'];
-
 		$present = $sec->get_present ( $id );
 		if (!$present) $present=array();
 		foreach ( $system_modules ['anywhere'] as $key => $value ) {
@@ -50,7 +48,7 @@ class sys_control {
 				$system_present [] = $module_present;
 			}
 		}
-		//fb::dump('q',$present);
+		//fb::dump('present',$present);
 		if (isset ( $system_present )) {
 			$present = array_merge ( $system_present, $present );
 		}
@@ -124,7 +122,7 @@ class sys_control {
 						// бриф запускается всегда на клиентской стороне, на админской же если нужно запустить бриф необходимо добавить	$this->admin_brief=true;
 						if (! isset ( $_GET ['ADMIN'] ) || (isset ( $module->admin_brief ) && $module->admin_brief)) {
 							$module->brief ( $section ['id'] );
-              //fb::dump('brief', $section);
+							//fb::dump('brief', $section);
 						}
 					} else {
 						$module->show ( $section ['id'] );
@@ -184,13 +182,14 @@ class sys_control {
 		XML::add_node ( '/', 'requests' );
 		XML::from_array ( '/root/requests', $_POST, 'post' );
 		XML::from_array ( '/root/requests', $_GET, 'get' );
-		$ses=$_SESSION;
-		unset($ses['messages']);
-		XML::from_array ( '/root/requests', $ses, 'session' );
-		foreach ( $_SESSION ['meta'] as $k => &$v )
-		$v = Utils::trimText ( $v, 250 );
-		XML::from_array ( '/', $_SESSION ['meta'], 'mod_meta_tags' );
+
+		if (isset($_SESSION ['meta'])) {
+			foreach ( $_SESSION ['meta'] as $k => &$v ) $v = Utils::trimText ( $v, 250 );
+			XML::from_array ( '/', $_SESSION ['meta'], 'mod_meta_tags' );
+		}
+
 		XML::from_array ( '/', Message::get () );
+		XML::from_array ( '/root/requests', $_SESSION, 'session' );
 		XML::add_node ( '/', 'date_time' );
 		XML::add_node ( '//date_time', 'date', date ( "d.m.Y" ) );
 		XML::add_node ( '//date_time', 'time', date ( "H:i:s" ) );

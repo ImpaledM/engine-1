@@ -82,6 +82,19 @@ class Login extends Users {
 	}
 
 	function brief() {
+		if (isset($_POST['token'])) {
+			$s = file_get_contents('http://ulogin.ru/token.php?token=' . $_POST['token'] . '&host=' . $_SERVER['HTTP_HOST']);
+			$user = json_decode($s, true);
+			XML::from_array('/', $user,'auth');
+			if (isset($user['first_name'])) {
+				$_SESSION['user']['id']=0;
+				$_SESSION['user']['first_name']=$user['first_name'];
+				$_SESSION['user']['last_name']=$user['last_name'];
+				$_SESSION['user']['avatar']=$user['photo'];
+				$_SESSION['user']['identity']=$user['identity'];
+			}
+		}
+
 		if (isset ( $_REQUEST ['logout'] )) {
 			$this->db->query ( 'UPDATE `' . $this->table . '` SET `date_last`=(NOW()-INTERVAL 2 MINUTE) WHERE `id`="' . $_SESSION ['user'] ['id'] . '"' );
 			unset ( $_SESSION ['user'] );

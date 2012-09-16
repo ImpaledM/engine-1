@@ -148,6 +148,9 @@ class Module extends Cache{
 	}
 
 	function save($id = null, $message = false) {
+		if (!isset($_POST['id_section']) && isset($_GET['section']))	$_POST['id_section']=$_GET['section'];
+		//var_dump($_POST);die();
+
 		if (isset($_SESSION['user']) && $_SESSION['user']['role']!=1 && isset($this->field_verify->none_save)){
 			$mode=(is_null($id))?1:2;
 			foreach ( ( array ) $this->field_verify->none_save as $field=>$value)
@@ -213,7 +216,6 @@ class Module extends Cache{
 				$this->db->query ( 'UPDATE ' . $add_query . ' WHERE id=?', $params );
 			}
 		}
-
 		if (isset ( $this->rules->bridge )) {
 			foreach ( ( array ) $this->rules->bridge as $field ) {
 				$ar_field = explode ( '_', $field );

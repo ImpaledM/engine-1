@@ -1,5 +1,6 @@
 <?
 Class Xml {
+
 	static $dom,$root,$header_xml=true;
 	/**
 	 * Совмещение xml и xsl
@@ -14,6 +15,7 @@ Class Xml {
 		$xml_filename=substr(basename($_SERVER['PHP_SELF']),0,-4);
 
 //       XML::debug();
+
 		if ( defined ( 'DEBUG' ) && DEBUG == 1 ){
 			self::debug ( $xml, $xml_filename );
 		}

@@ -204,12 +204,14 @@ class client_section {
 			else {
 				ERROR::status(404);
 				//header("Location: /errors/?STATUS=404");
-				die();
+				//die();
 			}
 		}
 	}
 	function get_module_name($id) {
-		return $this->db->get_one ( 'SELECT `module` FROM `section` WHERE `id`=!', $id );
+		if (intval($id)>0) {
+			return $this->db->get_one ( 'SELECT `module` FROM `section` WHERE `id`=!', $id );
+		}
 	}
 
 	function get_present($id) {
