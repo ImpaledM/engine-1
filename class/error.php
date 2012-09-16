@@ -35,7 +35,7 @@ class Error {
 					if (!preg_match("'MySQL server has gone away'", $str)){
 						$ml = new sendmail ();
 						$ml->addHtml ( $str );
-						$ml->send ( EMAIL_REPORT, $subject );
+						$ml->send ( EMAIL_REPORT, $subject, '', false , false);
 					}
 				}
 			} else

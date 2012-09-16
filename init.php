@@ -12,6 +12,7 @@ if (isset ( $_SERVER ['SERVER_NAME'] ))
 else
 	define ( 'DOMAIN', 'http://' . DOMAIN_CLEAR . '/' );
 
+
 define ( 'ENGINE', ROOT . 'engine/' );
 define ( 'MODULES', ENGINE . 'modules/' );
 define ( 'MODULES_LOCAL', ROOT . 'modules/' );

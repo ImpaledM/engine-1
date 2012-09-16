@@ -1,10 +1,10 @@
 <?
-if (LUCENE == 1) {
-	require_once 'Zend/Search/Lucene.php';
+/* if (LUCENE == 1) {
+ require_once 'Zend/Search/Lucene.php';
 
-	Zend_Search_Lucene_Search_QueryParser::setDefaultEncoding ( LUCENE_ENCODING );
-	Zend_Search_Lucene_Analysis_Analyzer::setDefault ( new Zend_Search_Lucene_Analysis_Analyzer_Common_Utf8_CaseInsensitive () );
-}
+Zend_Search_Lucene_Search_QueryParser::setDefaultEncoding ( LUCENE_ENCODING );
+Zend_Search_Lucene_Analysis_Analyzer::setDefault ( new Zend_Search_Lucene_Analysis_Analyzer_Common_Utf8_CaseInsensitive () );
+} */
 function getmicrotime() {
 	list ( $usec, $sec ) = explode ( " ", microtime () );
 	return (( float ) $usec + ( float ) $sec);
@@ -12,13 +12,15 @@ function getmicrotime() {
 
 class Spider {
 
-	private $current_page;
-	private $current_id;
-	private $db;
-	private $time_start, $time_end;
-	private $encoding;
+	private $current_page,
+	 $current_id,
+	 $db,
+	 $time_start, $time_end,
+	 $encoding,
+	 $id_parent, $link_parent;
 
 	function __construct($encoding = 'utf-8') {
+		restore_error_handler();
 		$this->encoding = $encoding;
 		$this->time_start = getmicrotime ();
 		$this->db = new Db ();
@@ -31,7 +33,7 @@ class Spider {
 		$output = array ();
 		for($i = 0, $max = sizeof ( $parts_path ); $i < $max; $i ++) {
 			if ('' == $parts_path [$i] || '.' == $parts_path [$i])
-				continue;
+			continue;
 			if ('..' == $parts_path [$i] && $i > 0 && '..' != @$output [sizeof ( $output ) - 1]) {
 				array_pop ( $output );
 				continue;
@@ -52,7 +54,7 @@ class Spider {
 				$in_url = false;
 			}
 
-		// если относительная ссылка
+			// если относительная ссылка
 		} else {
 
 			$in_url ['scheme'] = $current_url ['scheme'];
@@ -97,7 +99,7 @@ class Spider {
 			}
 			return $str;
 		} else
-			return false;
+		return false;
 	}
 
 	/**
@@ -114,8 +116,8 @@ class Spider {
 						$link = html_entity_decode ( $link );
 						if ($this->db->get_one ( 'select count(id) from spider_links where link=?', $link ) == 0) {
 							if (DEBUG || isset ( $_GET ['d'] ))
-								echo '[=] ' . $this->current_page . ' [-] ' . $link . ' [=]<hr/>';
-							$this->db->query ( 'insert into spider_links set link=?, indexed=0;', $link );
+							echo '  --> ' . $link .'<br/>';
+							$this->db->query ( 'INSERT spider_links SET id_parent=?, link=?, indexed=0;', array($this->id_parent, $link));
 						}
 					}
 				}
@@ -137,18 +139,24 @@ class Spider {
 
 	function valid_page($url) {
 		if ($url) {
-			$handle = fopen ( $url, "r" );
-			$ar = stream_get_meta_data ( $handle );
-			return (($ar ['wrapper_data'] [0] == 'HTTP/1.1 200 OK' || $ar ['wrapper_data'] [0] == 'HTTP/1.1 302 Found') /*&& in_array( 'Content-Type: text/html; charset=UTF-8', $ar['wrapper_data'] ) */);
+			$handle = @fopen ( $url, "r" );
+			if ($handle) {
+				$ar = stream_get_meta_data ( $handle );
+				return ($ar ['wrapper_data'] [0] == 'HTTP/1.1 200 OK' || $ar ['wrapper_data'] [0] == 'HTTP/1.1 302 Found');
+				//return ($ar ['wrapper_data'] ['headers'][0]=='' || $ar ['wrapper_data'] [0] == 'HTTP/1.1 200 OK' || $ar ['wrapper_data'] [0] == 'HTTP/1.1 302 Found');
+			} else {
+				return false;
+			}
 		} else
-			return false;
+		return false;
 	}
 
 	function start_index($url, $start = true, $debug = DEBUG) {
 		//  		`indexed` tinyint(4) NOT NULL DEFAULT '0',
 		if ($start) {
 			$this->db->query ( "CREATE TABLE IF NOT EXISTS `spider_links` (
-  		`id` int(10) NOT NULL auto_increment,
+  		`id` int(10) unsigned NOT NULL auto_increment,
+  		`id_parent` int(10) unsigned NOT NULL,
   		`link` text NOT NULL,
   		`indexed` int(1) NOT NULL default '0',
   		PRIMARY KEY  (`id`)
@@ -169,21 +177,26 @@ class Spider {
 			$this->current_id = 1;
 			$start = false;
 		}
-
-		if (file_exists ( SEARCH_PATH_INDEX ))
+//die('1');
+		/* 		if (file_exists ( SEARCH_PATH_INDEX ))
 			$index = new Zend_Search_Lucene ( SEARCH_PATH_INDEX );
 		else
-			$index = new Zend_Search_Lucene ( SEARCH_PATH_INDEX, true );
+		$index = new Zend_Search_Lucene ( SEARCH_PATH_INDEX, true ); */
 		$time = 0;
-		while ( ($row = $this->db->get_row ( 'SELECT * FROM `spider_links`  WHERE `indexed`="0" LIMIT 1' )) && ($time < 25) ) {
+		while ( ($row = $this->db->get_row ( 'SELECT a.*, b.link as link_parent FROM `spider_links` AS a LEFT JOIN `spider_links` AS b ON b.id=a.id_parent WHERE a.`indexed`="0" LIMIT 1' )) && ($time < 25) ) {
 			$url = $row ['link'];
-			$this->current_id = $row ['id'];
+			$this->link_parent = $row['link_parent'];
+      $this->id_parent = $row['id'];
+
+      $this->current_id = $row ['id'];
 
 			if ($this->valid_page ( $url )) {
+				echo $this->current_id.' - <b>'.$url.'</b><br/>';
 				$page_str = @file_get_contents ( $url );
 				$this->current_page = $url;
 
-				$page_str = $this->url_hilight ( $page_str ); // Захват ссыло
+				$page_str = $this->url_hilight ( $page_str ); // Захват ссылок
+				echo '<hr/>';
 				$search = array ("'<(noindex|noscript|script|head|style|unstore)[^>]*.*</(noindex|noscript|script|head|style|unstore)>'isU", "'<!--START-->.*?<!--END-->'si",
 
 				"'&(quot|#34);'i", "'&(amp|#38);'i", "'&(lt|#60);'i", "'&(gt|#62);'i", "'&(nbsp|#160);'i", "'&(iexcl|#161);'i", "'&(cent|#162);'i", "'&(pound|#163);'i", "'&(copy|#169);'i", "'&hellip;'i", "'&ndash;'i", "'&laquo;'i", "'&raquo;'i" );
@@ -192,7 +205,7 @@ class Spider {
 
 				if (strtolower ( $this->encoding ) != 'utf-8') {
 					if (is_string ( $page_str ))
-						$page_str = iconv ( $this->encoding, "utf-8", $page_str );
+					$page_str = iconv ( $this->encoding, "utf-8", $page_str );
 				}
 
 				preg_match ( '/<title>(.*)<\/title>/imU', $page_str, $ar );
@@ -213,18 +226,18 @@ class Spider {
 				//*******************************************************************************************
 
 
-				$urls = array (DOMAIN, DOMAIN . 'login/', DOMAIN . 'items/', DOMAIN . 'city/', DOMAIN . 'types/', DOMAIN . 'signup/', DOMAIN . 'login/' );
+/* 				$urls = array (DOMAIN, DOMAIN . 'login/', DOMAIN . 'items/', DOMAIN . 'city/', DOMAIN . 'types/', DOMAIN . 'signup/', DOMAIN . 'login/' );
 
-				if (! preg_match ( "'.+ADMIN+'is", $this->current_page ) && ! preg_match ( "'.+\/types\/+'is", $this->current_page ) && ! preg_match ( "'.+PAGE=.+'is", $this->current_page ) && ! preg_match ( "'.+LETTER=.+'is", $this->current_page ) && ! in_array ( $this->current_page, $urls )) {
-					$doc = new Zend_Search_Lucene_Document ();
-					$doc->addField ( Zend_Search_Lucene_Field::UnIndexed ( 'link', $this->current_page, LUCENE_ENCODING ) );
+ 				if (! preg_match ( "'.+ADMIN+'is", $this->current_page ) && ! preg_match ( "'.+\/types\/+'is", $this->current_page ) && ! preg_match ( "'.+PAGE=.+'is", $this->current_page ) && ! preg_match ( "'.+LETTER=.+'is", $this->current_page ) && ! in_array ( $this->current_page, $urls )) { */
+					/* 					$doc = new Zend_Search_Lucene_Document ();
+					 $doc->addField ( Zend_Search_Lucene_Field::UnIndexed ( 'link', $this->current_page, LUCENE_ENCODING ) );
 					$doc->addField ( Zend_Search_Lucene_Field::Text ( 'title', $title, LUCENE_ENCODING ) );
 					$doc->addField ( Zend_Search_Lucene_Field::UnStored ( 'contents', $page_str, LUCENE_ENCODING ) );
-					$index->addDocument ( $doc );
+					$index->addDocument ( $doc ); */
 
-					if (DEBUG || isset ( $_GET ['d'] ))
-						echo '<div style="color:green">' . $this->current_page . '</div><hr/>';
-				}
+/* 					if (DEBUG || isset ( $_GET ['d'] ))
+					echo '<div style="color:green">[записано в базу]' . $this->current_page . '</div><hr/>'; */
+			/* 	} */
 				//*******************************************************************************************
 
 
@@ -232,15 +245,16 @@ class Spider {
 				$time = $this->time_end - $this->time_start;
 
 			} else {
+				echo $this->link_parent.'<br/><div style="color:red">  -->'.$url.'</div><hr/>';
 				if (! empty ( $this->current_id )) {
-					file_put_contents ( ROOT . 'error_links.txt', $this->db->get_one ( 'SELECT `link` from `spider_links` where `id`=?;', $this->current_id ), FILE_APPEND );
+					file_put_contents ( ROOT . 'error_links.txt', $this->link_parent."\n  -->".$url."\n", FILE_APPEND );
 					$this->db->query ( 'delete from spider_links where id=?;', $this->current_id );
 				}
 			}
 
 		}
-		$index->commit ();
-		$index->optimize ();
+/* 		$index->commit ();
+		$index->optimize (); */
 
 	}
 }
